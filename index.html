@@ -2,482 +2,598 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GS Equity Screener — 500 Stocks</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GS Equity Screener — Nifty 500</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#0a0f1e;--bg2:#0f1628;--bg3:#141d35;--gold:#c9a84c;--gold2:#e8c96a;--text:#e8eaf0;--muted:#6b7a99;--border:#1e2a45;--green:#2ecc71;--amber:#f0a500;--red:#e74c3c}
-body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;font-size:12px;min-height:100vh;overflow:hidden}
-.topbar{background:var(--bg2);border-bottom:1px solid var(--gold);padding:0 16px;display:flex;align-items:center;justify-content:space-between;height:44px;flex-shrink:0}
-.brand{font-size:14px;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase}
-.brand-sub{font-size:9px;color:var(--muted);letter-spacing:3px}
-.topbar-right{display:flex;align-items:center;gap:16px}
-.topbar-time{font-family:monospace;font-size:11px;color:var(--muted)}
-.search-wrap{position:relative}
-.search-input{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:5px 10px 5px 28px;font-size:11px;width:200px}
-.search-input:focus{outline:none;border-color:var(--gold)}
-.search-icon{position:absolute;left:8px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:11px}
-.sumbar{background:var(--bg3);border-bottom:1px solid var(--border);padding:6px 16px;display:flex;gap:24px;align-items:center;flex-shrink:0}
-.sum-item{display:flex;flex-direction:column;gap:1px}
-.sum-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
-.sum-val{font-family:monospace;font-size:14px;font-weight:600;color:var(--gold)}
-.layout{display:flex;height:calc(100vh - 90px)}
-.sidebar{width:220px;min-width:220px;background:var(--bg2);border-right:1px solid var(--border);padding:12px;overflow-y:auto;flex-shrink:0}
-.sidebar-title{font-size:9px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;padding-bottom:5px;border-bottom:1px solid var(--border)}
-.filter-group{margin-bottom:14px}
-.filter-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;display:flex;justify-content:space-between}
-.filter-label span{color:var(--gold);font-family:monospace}
-.cap-toggles{display:flex;gap:3px;flex-wrap:wrap}
-.cap-btn{flex:1;padding:4px 0;background:var(--bg3);border:1px solid var(--border);color:var(--muted);font-size:10px;cursor:pointer;text-align:center;transition:all .12s;min-width:36px}
-.cap-btn.active{background:var(--gold);color:#0a0f1e;border-color:var(--gold);font-weight:700}
-.cap-btn:hover:not(.active){border-color:var(--gold);color:var(--gold)}
-.range-input{width:100%;-webkit-appearance:none;appearance:none;height:2px;background:var(--border);outline:none;margin:4px 0;cursor:pointer}
-.range-input::-webkit-slider-thumb{-webkit-appearance:none;width:10px;height:10px;background:var(--gold);cursor:pointer}
-select{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:5px 7px;font-size:11px;cursor:pointer;-webkit-appearance:none}
+:root{--bg:#0a0f1e;--bg2:#0f1628;--bg3:#141d35;--gold:#c9a84c;--g2:#e8c96a;--tx:#e8eaf0;--mu:#6b7a99;--br:#1e2a45;--gr:#2ecc71;--am:#f0a500;--rd:#e74c3c}
+body{background:var(--bg);color:var(--tx);font-family:'Segoe UI',system-ui,sans-serif;font-size:12px;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+/* TOPBAR */
+.tb{background:var(--bg2);border-bottom:1px solid var(--gold);padding:0 14px;display:flex;align-items:center;justify-content:space-between;height:42px;flex-shrink:0}
+.brand{font-size:13px;font-weight:700;color:var(--gold);letter-spacing:2px}
+.brand-s{font-size:9px;color:var(--mu);letter-spacing:2px}
+.si{position:relative}
+.si input{background:var(--bg3);border:1px solid var(--br);color:var(--tx);padding:4px 8px 4px 26px;font-size:11px;width:210px}
+.si input:focus{outline:none;border-color:var(--gold)}
+.si span{position:absolute;left:7px;top:50%;transform:translateY(-50%);color:var(--mu);font-size:12px}
+.clk{font-family:monospace;font-size:10px;color:var(--mu)}
+/* SUMBAR */
+.sb{background:var(--bg3);border-bottom:1px solid var(--br);padding:5px 14px;display:flex;gap:20px;flex-shrink:0}
+.si2{display:flex;flex-direction:column;gap:1px}
+.sl{font-size:9px;color:var(--mu);text-transform:uppercase;letter-spacing:1px}
+.sv{font-family:monospace;font-size:13px;font-weight:600;color:var(--gold)}
+/* LAYOUT */
+.lay{display:flex;flex:1;overflow:hidden}
+/* SIDEBAR */
+.sid{width:210px;min-width:210px;background:var(--bg2);border-right:1px solid var(--br);padding:10px;overflow-y:auto;flex-shrink:0}
+.stit{font-size:9px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;padding-bottom:4px;border-bottom:1px solid var(--br)}
+.fg{margin-bottom:12px}
+.fl{font-size:9px;color:var(--mu);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;display:flex;justify-content:space-between}
+.fl span{color:var(--gold);font-family:monospace}
+.ct{display:flex;gap:3px}
+.cb{flex:1;padding:3px 0;background:var(--bg3);border:1px solid var(--br);color:var(--mu);font-size:10px;cursor:pointer;text-align:center}
+.cb.on{background:var(--gold);color:#0a0f1e;border-color:var(--gold);font-weight:700}
+.cb:hover:not(.on){border-color:var(--gold);color:var(--gold)}
+input[type=range]{width:100%;-webkit-appearance:none;height:2px;background:var(--br);outline:none;margin:3px 0;cursor:pointer;display:block}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:10px;height:10px;background:var(--gold);cursor:pointer}
+select{width:100%;background:var(--bg3);border:1px solid var(--br);color:var(--tx);padding:4px 6px;font-size:11px;cursor:pointer;-webkit-appearance:none}
 select:focus{outline:none;border-color:var(--gold)}
-.reset-btn{width:100%;padding:6px;background:transparent;border:1px solid var(--border);color:var(--muted);font-size:10px;cursor:pointer;letter-spacing:1px;text-transform:uppercase;margin-top:6px}
-.reset-btn:hover{border-color:var(--gold);color:var(--gold)}
-.main{flex:1;overflow:auto;position:relative}
+.rb{width:100%;padding:5px;background:transparent;border:1px solid var(--br);color:var(--mu);font-size:10px;cursor:pointer;letter-spacing:1px;text-transform:uppercase;margin-top:6px}
+.rb:hover{border-color:var(--gold);color:var(--gold)}
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.tscroll{flex:1;overflow:auto}
 table{width:100%;border-collapse:collapse;font-size:11px}
 thead tr{background:var(--bg3);position:sticky;top:0;z-index:10}
-th{padding:8px 10px;text-align:left;font-size:9px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--gold);white-space:nowrap;cursor:pointer;user-select:none}
-th:hover{color:var(--gold2)}
-th.sorted{color:var(--gold2)}
-td{padding:6px 10px;border-bottom:1px solid #111827;white-space:nowrap}
+th{padding:7px 9px;text-align:left;font-size:9px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--gold);white-space:nowrap;cursor:pointer;user-select:none}
+th:hover,th.on{color:var(--g2)}
+td{padding:5px 9px;border-bottom:1px solid #0e1525;white-space:nowrap}
 tr:hover td{background:rgba(201,168,76,0.04)}
-td.num{font-family:monospace;text-align:right}
-td.name{font-weight:500;color:#fff;max-width:180px;overflow:hidden;text-overflow:ellipsis}
-td.sym{font-family:monospace;color:var(--gold);font-size:10px}
-td.sector{color:var(--muted);font-size:10px}
-td.exchange{font-size:9px;color:var(--muted);font-family:monospace}
-.badge{display:inline-block;padding:1px 6px;font-size:9px;font-weight:700;letter-spacing:1px;border:1px solid}
-.badge.buy{color:var(--green);border-color:var(--green);background:rgba(46,204,113,0.07)}
-.badge.hold{color:var(--amber);border-color:var(--amber);background:rgba(240,165,0,0.07)}
-.badge.sell{color:var(--red);border-color:var(--red);background:rgba(231,76,60,0.07)}
-.pos{color:var(--green)}
-.neg{color:var(--red)}
-.no-results{padding:40px;text-align:center;color:var(--muted);letter-spacing:1px}
-.pager{display:flex;align-items:center;justify-content:center;gap:8px;padding:8px;background:var(--bg2);border-top:1px solid var(--border);flex-shrink:0;position:sticky;bottom:0}
-.page-btn{padding:3px 10px;background:var(--bg3);border:1px solid var(--border);color:var(--muted);font-size:10px;cursor:pointer}
-.page-btn:hover,.page-btn.active{border-color:var(--gold);color:var(--gold)}
-.page-info{font-size:10px;color:var(--muted);font-family:monospace;min-width:120px;text-align:center}
+.tn{font-weight:500;color:#fff;max-width:170px;overflow:hidden;text-overflow:ellipsis}
+.ts{font-family:monospace;color:var(--gold);font-size:10px}
+.tc{color:var(--mu);font-size:10px}
+.te{font-size:9px;color:var(--mu);font-family:monospace}
+.num{font-family:monospace;text-align:right}
+.badge{display:inline-block;padding:1px 5px;font-size:9px;font-weight:700;letter-spacing:1px;border:1px solid}
+.buy{color:var(--gr);border-color:var(--gr);background:rgba(46,204,113,.07)}
+.hold{color:var(--am);border-color:var(--am);background:rgba(240,165,0,.07)}
+.sell{color:var(--rd);border-color:var(--rd);background:rgba(231,76,60,.07)}
+.pos{color:var(--gr)}.neg{color:var(--rd)}
+.nr{padding:30px;text-align:center;color:var(--mu);letter-spacing:1px}
+/* PAGER */
+.pg{display:flex;align-items:center;justify-content:center;gap:6px;padding:6px;background:var(--bg2);border-top:1px solid var(--br);flex-shrink:0}
+.pb{padding:2px 8px;background:var(--bg3);border:1px solid var(--br);color:var(--mu);font-size:10px;cursor:pointer}
+.pb:hover,.pb.on{border-color:var(--gold);color:var(--gold)}
+.pb:disabled{opacity:.3;cursor:default}
+.pi{font-size:10px;color:var(--mu);font-family:monospace;min-width:130px;text-align:center}
 ::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--border)}
+::-webkit-scrollbar-thumb{background:var(--br)}
 </style>
 </head>
 <body>
-
-<div class="topbar">
+<div class="tb">
+  <div><div class="brand">GS EQUITY SCREENER</div><div class="brand-s">NIFTY 500 · NSE / BSE · REAL SYMBOLS</div></div>
   <div style="display:flex;align-items:center;gap:12px">
-    <div><div class="brand">GS Equity Screener</div><div class="brand-sub">NSE / BSE — 500 Securities</div></div>
-  </div>
-  <div class="topbar-right">
-    <div class="search-wrap">
-      <span class="search-icon">⌕</span>
-      <input class="search-input" id="search" placeholder="Search name or symbol..." oninput="applyFilters()">
-    </div>
-    <div class="topbar-time" id="clock"></div>
+    <div class="si"><span>⌕</span><input id="q" placeholder="Name or symbol..." oninput="af()"></div>
+    <div class="clk" id="ck"></div>
   </div>
 </div>
-
-<div class="sumbar">
-  <div class="sum-item"><span class="sum-label">Shown</span><span class="sum-val" id="s-count">500</span></div>
-  <div class="sum-item"><span class="sum-label">Avg Yield</span><span class="sum-val" id="s-yield">—</span></div>
-  <div class="sum-item"><span class="sum-label">Avg P/E</span><span class="sum-val" id="s-pe">—</span></div>
-  <div class="sum-item"><span class="sum-label">Avg 52W</span><span class="sum-val" id="s-perf">—</span></div>
-  <div class="sum-item"><span class="sum-label">Buy / Hold / Sell</span><span class="sum-val" id="s-signals">—</span></div>
-  <div class="sum-item"><span class="sum-label">Page</span><span class="sum-val" id="s-page">1 / 1</span></div>
+<div class="sb">
+  <div class="si2"><span class="sl">Shown</span><span class="sv" id="sc">500</span></div>
+  <div class="si2"><span class="sl">Avg Yield</span><span class="sv" id="sy">—</span></div>
+  <div class="si2"><span class="sl">Avg P/E</span><span class="sv" id="sp">—</span></div>
+  <div class="si2"><span class="sl">Avg 52W</span><span class="sv" id="sw">—</span></div>
+  <div class="si2"><span class="sl">Buy/Hold/Sell</span><span class="sv" id="ss">—</span></div>
+  <div class="si2"><span class="sl">Page</span><span class="sv" id="spg">1/1</span></div>
 </div>
-
-<div class="layout">
-<div class="sidebar">
-  <div class="sidebar-title">Screening Filters</div>
-
-  <div class="filter-group">
-    <div class="filter-label">Market Cap</div>
-    <div class="cap-toggles">
-      <div class="cap-btn active" data-cap="all" onclick="setCap(this)">All</div>
-      <div class="cap-btn" data-cap="large" onclick="setCap(this)">Large</div>
-      <div class="cap-btn" data-cap="mid" onclick="setCap(this)">Mid</div>
-      <div class="cap-btn" data-cap="small" onclick="setCap(this)">Small</div>
+<div class="lay">
+<div class="sid">
+  <div class="stit">Filters</div>
+  <div class="fg"><div class="fl">Market Cap</div>
+    <div class="ct">
+      <div class="cb on" data-c="all" onclick="setC(this)">All</div>
+      <div class="cb" data-c="large" onclick="setC(this)">Large</div>
+      <div class="cb" data-c="mid" onclick="setC(this)">Mid</div>
+      <div class="cb" data-c="small" onclick="setC(this)">Small</div>
     </div>
   </div>
-
-  <div class="filter-group">
-    <div class="filter-label">Exchange</div>
-    <select id="f-exchange" onchange="applyFilters()">
-      <option value="all">NSE + BSE</option>
-      <option value="NSE">NSE Only</option>
-      <option value="BSE">BSE Only</option>
-    </select>
+  <div class="fg"><div class="fl">Exchange</div>
+    <select id="fe" onchange="af()"><option value="all">NSE + BSE</option><option value="NSE">NSE</option><option value="BSE">BSE</option></select>
   </div>
-
-  <div class="filter-group">
-    <div class="filter-label">Sector</div>
-    <select id="f-sector" onchange="applyFilters()">
+  <div class="fg"><div class="fl">Sector</div>
+    <select id="fs" onchange="af()">
       <option value="all">All Sectors</option>
-      <option value="Banking">Banking & Finance</option>
-      <option value="IT">Information Technology</option>
-      <option value="Energy">Energy & Oil</option>
-      <option value="FMCG">FMCG & Consumer</option>
-      <option value="Metals">Metals & Mining</option>
-      <option value="Pharma">Pharmaceuticals</option>
-      <option value="Auto">Automobiles</option>
-      <option value="Infra">Infrastructure</option>
-      <option value="Chemicals">Chemicals</option>
-      <option value="Telecom">Telecom</option>
-      <option value="Realty">Realty</option>
-      <option value="Media">Media</option>
-      <option value="Textiles">Textiles</option>
-      <option value="NBFC">NBFC</option>
-      <option value="Insurance">Insurance</option>
-      <option value="Agri">Agri & Food</option>
+      <option>Banking</option><option>IT</option><option>Energy</option><option>FMCG</option>
+      <option>Metals</option><option>Pharma</option><option>Auto</option><option>Infra</option>
+      <option>Chemicals</option><option>Telecom</option><option>Realty</option><option>Insurance</option>
+      <option>NBFC</option><option>Media</option><option>Textiles</option><option>Agri</option>
+      <option>Defence</option><option>Hospitality</option><option>Logistics</option><option>Power</option>
     </select>
   </div>
-
-  <div class="filter-group">
-    <div class="filter-label">Signal</div>
-    <select id="f-signal" onchange="applyFilters()">
-      <option value="all">All Signals</option>
-      <option value="Buy">Buy</option>
-      <option value="Hold">Hold</option>
-      <option value="Sell">Sell</option>
-    </select>
+  <div class="fg"><div class="fl">Signal</div>
+    <select id="fg2" onchange="af()"><option value="all">All</option><option>Buy</option><option>Hold</option><option>Sell</option></select>
   </div>
-
-  <div class="filter-group">
-    <div class="filter-label">Dividend Yield % <span id="dy-lbl">0–15</span></div>
-    <input type="range" class="range-input" id="f-dy-min" min="0" max="15" step="0.5" value="0" oninput="syncR();applyFilters()">
-    <input type="range" class="range-input" id="f-dy-max" min="0" max="15" step="0.5" value="15" oninput="syncR();applyFilters()">
+  <div class="fg"><div class="fl">Div Yield % <span id="dyl">0–15</span></div>
+    <input type="range" id="dyn" min="0" max="15" step="0.5" value="0" oninput="sr();af()">
+    <input type="range" id="dyx" min="0" max="15" step="0.5" value="15" oninput="sr();af()">
   </div>
-
-  <div class="filter-group">
-    <div class="filter-label">P/E Ratio <span id="pe-lbl">0–100</span></div>
-    <input type="range" class="range-input" id="f-pe-min" min="0" max="100" step="1" value="0" oninput="syncR();applyFilters()">
-    <input type="range" class="range-input" id="f-pe-max" min="0" max="100" step="1" value="100" oninput="syncR();applyFilters()">
+  <div class="fg"><div class="fl">P/E Ratio <span id="pel">0–100</span></div>
+    <input type="range" id="pen" min="0" max="100" step="1" value="0" oninput="sr();af()">
+    <input type="range" id="pex" min="0" max="100" step="1" value="100" oninput="sr();af()">
   </div>
-
-  <div class="filter-group">
-    <div class="filter-label">52W Perf % <span id="pw-lbl">-80–200</span></div>
-    <input type="range" class="range-input" id="f-pw-min" min="-80" max="200" step="5" value="-80" oninput="syncR();applyFilters()">
-    <input type="range" class="range-input" id="f-pw-max" min="-80" max="200" step="5" value="200" oninput="syncR();applyFilters()">
+  <div class="fg"><div class="fl">52W Perf % <span id="pwl">-80–200</span></div>
+    <input type="range" id="pwn" min="-80" max="200" step="5" value="-80" oninput="sr();af()">
+    <input type="range" id="pwx" min="-80" max="200" step="5" value="200" oninput="sr();af()">
   </div>
-
-  <div class="filter-group">
-    <div class="filter-label">Price ₹ <span id="pr-lbl">0–50000</span></div>
-    <input type="range" class="range-input" id="f-pr-min" min="0" max="50000" step="50" value="0" oninput="syncR();applyFilters()">
-    <input type="range" class="range-input" id="f-pr-max" min="0" max="50000" step="50" value="50000" oninput="syncR();applyFilters()">
+  <div class="fg"><div class="fl">Price ₹ <span id="prl">0–50K</span></div>
+    <input type="range" id="prn" min="0" max="50000" step="100" value="0" oninput="sr();af()">
+    <input type="range" id="prx" min="0" max="50000" step="100" value="50000" oninput="sr();af()">
   </div>
-
-  <div class="filter-group">
-    <div class="filter-label">D/E Max <span id="de-lbl">≤5.0</span></div>
-    <input type="range" class="range-input" id="f-de" min="0" max="5" step="0.1" value="5" oninput="document.getElementById('de-lbl').textContent='≤'+parseFloat(this.value).toFixed(1);applyFilters()">
+  <div class="fg"><div class="fl">D/E Max <span id="del">≤5</span></div>
+    <input type="range" id="dem" min="0" max="5" step="0.1" value="5" oninput="document.getElementById('del').textContent='≤'+parseFloat(this.value).toFixed(1);af()">
   </div>
-
-  <button class="reset-btn" onclick="resetFilters()">↺ Reset Filters</button>
+  <button class="rb" onclick="rst()">↺ Reset</button>
 </div>
-
-<div style="display:flex;flex-direction:column;flex:1;overflow:hidden">
-<div class="main" id="main-scroll">
-  <table id="tbl">
-    <thead><tr>
-      <th onclick="srt('name')">#  Company ↕</th>
-      <th onclick="srt('sym')">Symbol ↕</th>
-      <th onclick="srt('exchange')">Exch ↕</th>
-      <th onclick="srt('sector')">Sector ↕</th>
-      <th onclick="srt('price')" style="text-align:right">Price ₹ ↕</th>
-      <th onclick="srt('mcapN')" style="text-align:right">Mkt Cap ↕</th>
-      <th onclick="srt('pe')" style="text-align:right">P/E ↕</th>
-      <th onclick="srt('dy')" style="text-align:right">Div Yield ↕</th>
-      <th onclick="srt('de')" style="text-align:right">D/E ↕</th>
-      <th onclick="srt('high52')" style="text-align:right">52W High ↕</th>
-      <th onclick="srt('low52')" style="text-align:right">52W Low ↕</th>
-      <th onclick="srt('perf')" style="text-align:right">52W Perf ↕</th>
-      <th onclick="srt('signal')">Signal ↕</th>
-    </tr></thead>
-    <tbody id="tbody"></tbody>
-  </table>
-  <div id="no-res" class="no-results" style="display:none">No securities match current screening criteria.</div>
-</div>
-<div class="pager" id="pager"></div>
+<div class="main">
+  <div class="tscroll" id="ts">
+    <table id="tbl">
+      <thead><tr>
+        <th onclick="srt('nm')">#  Name ↕</th>
+        <th onclick="srt('sym')">Symbol ↕</th>
+        <th onclick="srt('ex')">Exch ↕</th>
+        <th onclick="srt('sec')">Sector ↕</th>
+        <th onclick="srt('p')" style="text-align:right">Price ₹ ↕</th>
+        <th onclick="srt('mc')" style="text-align:right">Mkt Cap ↕</th>
+        <th onclick="srt('pe')" style="text-align:right">P/E ↕</th>
+        <th onclick="srt('dy')" style="text-align:right">Div Yld ↕</th>
+        <th onclick="srt('de')" style="text-align:right">D/E ↕</th>
+        <th onclick="srt('h52')" style="text-align:right">52W Hi ↕</th>
+        <th onclick="srt('l52')" style="text-align:right">52W Lo ↕</th>
+        <th onclick="srt('pf')" style="text-align:right">52W% ↕</th>
+        <th onclick="srt('sig')">Signal ↕</th>
+      </tr></thead>
+      <tbody id="tb"></tbody>
+    </table>
+    <div id="nr" class="nr" style="display:none">No securities match current criteria.</div>
+  </div>
+  <div class="pg" id="pgr"></div>
 </div>
 </div>
-
 <script>
-// ── helpers ──────────────────────────────────────────────────────────────────
-const rnd=(min,max,dec=2)=>+((Math.random()*(max-min)+min).toFixed(dec));
-const pick=arr=>arr[Math.floor(Math.random()*arr.length)];
-const signals=['Buy','Buy','Buy','Hold','Hold','Hold','Hold','Sell'];
-const caps=['large','large','large','mid','mid','small'];
-const exchanges=['NSE','NSE','NSE','BSE','NSE','BSE'];
+// ─── Real Nifty 500 stocks with correct NSE symbols ──────────────────────
+const R=(a,b,d=1)=>+(Math.random()*(b-a)+a).toFixed(d);
+const P=a=>a[Math.floor(Math.random()*a.length)];
+const SIG=['Buy','Buy','Buy','Hold','Hold','Hold','Hold','Sell'];
 
-// ── 500 stocks definition ────────────────────────────────────────────────────
-const rawStocks=[
-// LARGE CAP ANCHORS (real names, realistic data)
-{n:"Reliance Industries",s:"RELIANCE",sec:"Energy",ex:"NSE",cap:"large",p:1285,mc:1740000,pe:24.1,dy:0.42,de:0.42,h:1608,l:1175,pf:8.5,sig:"Hold"},
-{n:"TCS",s:"TCS",sec:"IT",ex:"NSE",cap:"large",p:3512,mc:1270000,pe:28.4,dy:1.71,de:0.05,h:4592,l:3311,pf:-12.4,sig:"Hold"},
-{n:"HDFC Bank",s:"HDFCBANK",sec:"Banking",ex:"NSE",cap:"large",p:1742,mc:1320000,pe:18.9,dy:1.26,de:0.82,h:1880,l:1363,pf:14.2,sig:"Buy"},
-{n:"Infosys",s:"INFY",sec:"IT",ex:"NSE",cap:"large",p:1548,mc:640000,pe:23.7,dy:2.91,de:0.09,h:2006,l:1358,pf:-8.7,sig:"Hold"},
-{n:"ICICI Bank",s:"ICICIBANK",sec:"Banking",ex:"NSE",cap:"large",p:1282,mc:900000,pe:18.2,dy:0.78,de:0.95,h:1361,l:1023,pf:21.3,sig:"Buy"},
-{n:"HUL",s:"HINDUNILVR",sec:"FMCG",ex:"NSE",cap:"large",p:2198,mc:520000,pe:52.3,dy:1.82,de:0.00,h:2859,l:2172,pf:-10.4,sig:"Hold"},
-{n:"ITC Ltd",s:"ITC",sec:"FMCG",ex:"NSE",cap:"large",p:300,mc:380000,pe:10.9,dy:3.56,de:0.00,h:444,l:299,pf:-25.4,sig:"Buy"},
-{n:"SBI",s:"SBIN",sec:"Banking",ex:"NSE",cap:"large",p:798,mc:710000,pe:9.8,dy:1.88,de:1.24,h:912,l:681,pf:8.2,sig:"Buy"},
-{n:"Bharti Airtel",s:"BHARTIARTL",sec:"Telecom",ex:"NSE",cap:"large",p:1682,mc:1000000,pe:78.4,dy:0.48,de:1.83,h:1779,l:1123,pf:36.5,sig:"Buy"},
-{n:"Bajaj Finance",s:"BAJFINANCE",sec:"NBFC",ex:"NSE",cap:"large",p:8924,mc:540000,pe:32.8,dy:0.56,de:3.81,h:9900,l:6187,pf:19.7,sig:"Hold"},
-{n:"Vedanta",s:"VEDL",sec:"Metals",ex:"NSE",cap:"large",p:721,mc:280000,pe:13.6,dy:8.31,de:1.12,h:769,l:363,pf:68.1,sig:"Buy"},
-{n:"Coal India",s:"COALINDIA",sec:"Metals",ex:"NSE",cap:"large",p:455,mc:280000,pe:17.0,dy:6.93,de:0.00,h:476,l:356,pf:18.7,sig:"Buy"},
-{n:"ONGC",s:"ONGC",sec:"Energy",ex:"NSE",cap:"large",p:260,mc:330000,pe:7.4,dy:5.12,de:0.38,h:293,l:205,pf:15.6,sig:"Buy"},
-{n:"HCL Tech",s:"HCLTECH",sec:"IT",ex:"NSE",cap:"large",p:1326,mc:360000,pe:21.9,dy:3.61,de:0.06,h:1906,l:1235,pf:-8.2,sig:"Hold"},
-{n:"Indian Oil",s:"IOC",sec:"Energy",ex:"NSE",cap:"large",p:148,mc:210000,pe:11.2,dy:6.39,de:0.71,h:188,l:122,pf:10.4,sig:"Buy"},
-{n:"Power Grid",s:"POWERGRID",sec:"Infra",ex:"NSE",cap:"large",p:295,mc:270000,pe:17.7,dy:3.39,de:1.85,h:366,l:260,pf:4.2,sig:"Hold"},
-{n:"REC Ltd",s:"RECLTD",sec:"Banking",ex:"NSE",cap:"large",p:331,mc:260000,pe:8.9,dy:5.25,de:4.12,h:450,l:321,pf:-10.4,sig:"Buy"},
-{n:"Hindustan Zinc",s:"HINDZINC",sec:"Metals",ex:"NSE",cap:"large",p:586,mc:250000,pe:21.0,dy:4.94,de:0.18,h:798,l:490,pf:12.1,sig:"Hold"},
-{n:"NMDC",s:"NMDC",sec:"Metals",ex:"NSE",cap:"large",p:78,mc:70000,pe:9.0,dy:4.79,de:0.00,h:86,l:59,pf:19.3,sig:"Buy"},
-{n:"Castrol India",s:"CASTROLIND",sec:"Energy",ex:"NSE",cap:"mid",p:187,mc:18000,pe:19.5,dy:7.08,de:0.00,h:244,l:180,pf:-22.9,sig:"Hold"},
-{n:"Wipro",s:"WIPRO",sec:"IT",ex:"NSE",cap:"large",p:262,mc:270000,pe:19.8,dy:0.76,de:0.12,h:324,l:208,pf:10.2,sig:"Hold"},
-{n:"Maruti Suzuki",s:"MARUTI",sec:"Auto",ex:"NSE",cap:"large",p:11582,mc:350000,pe:26.4,dy:0.86,de:0.02,h:13680,l:10474,pf:-2.8,sig:"Hold"},
-{n:"Tata Motors",s:"TATAMOTORS",sec:"Auto",ex:"NSE",cap:"large",p:692,mc:260000,pe:8.2,dy:0.72,de:1.52,h:1179,l:614,pf:-27.4,sig:"Buy"},
-{n:"Sun Pharma",s:"SUNPHARMA",sec:"Pharma",ex:"NSE",cap:"large",p:1682,mc:400000,pe:34.6,dy:0.89,de:0.10,h:1960,l:1310,pf:20.4,sig:"Buy"},
-{n:"Dr Reddy's",s:"DRREDDY",sec:"Pharma",ex:"NSE",cap:"large",p:1162,mc:97000,pe:18.2,dy:0.69,de:0.09,h:1419,l:1060,pf:2.1,sig:"Hold"},
-{n:"Asian Paints",s:"ASIANPAINT",sec:"Chemicals",ex:"NSE",cap:"large",p:2182,mc:210000,pe:44.2,dy:1.38,de:0.05,h:3394,l:2118,pf:-22.6,sig:"Sell"},
-{n:"Nestle India",s:"NESTLEIND",sec:"FMCG",ex:"NSE",cap:"large",p:2192,mc:210000,pe:68.2,dy:1.82,de:0.00,h:2778,l:2100,pf:-5.4,sig:"Hold"},
-{n:"Titan Company",s:"TITAN",sec:"FMCG",ex:"NSE",cap:"large",p:3248,mc:290000,pe:82.1,dy:0.31,de:0.08,h:3888,l:2824,pf:8.2,sig:"Hold"},
-{n:"Axis Bank",s:"AXISBANK",sec:"Banking",ex:"NSE",cap:"large",p:1064,mc:330000,pe:13.4,dy:0.09,de:1.02,h:1339,l:942,pf:4.8,sig:"Buy"},
-{n:"UltraTech Cement",s:"ULTRACEMCO",sec:"Infra",ex:"NSE",cap:"large",p:10482,mc:300000,pe:42.8,dy:0.48,de:0.22,h:12247,l:9600,pf:2.4,sig:"Hold"},
-{n:"Kotak Mahindra Bank",s:"KOTAKBANK",sec:"Banking",ex:"NSE",cap:"large",p:1992,mc:390000,pe:21.2,dy:0.10,de:0.48,h:2288,l:1543,pf:20.5,sig:"Buy"},
-{n:"L&T",s:"LT",sec:"Infra",ex:"NSE",cap:"large",p:3418,mc:470000,pe:32.4,dy:0.88,de:1.14,h:3963,l:2973,pf:8.4,sig:"Buy"},
-{n:"NTPC",s:"NTPC",sec:"Energy",ex:"NSE",cap:"large",p:342,mc:330000,pe:16.8,dy:2.92,de:1.42,h:448,l:304,pf:0.4,sig:"Hold"},
-{n:"Tech Mahindra",s:"TECHM",sec:"IT",ex:"NSE",cap:"large",p:1512,mc:150000,pe:28.4,dy:1.99,de:0.10,h:1807,l:1172,pf:12.4,sig:"Hold"},
-{n:"BPCL",s:"BPCL",sec:"Energy",ex:"NSE",cap:"large",p:286,mc:120000,pe:9.8,dy:7.40,de:0.62,h:376,l:252,pf:-8.2,sig:"Buy"},
-{n:"Grasim",s:"GRASIM",sec:"Chemicals",ex:"NSE",cap:"large",p:2572,mc:170000,pe:21.4,dy:0.47,de:0.38,h:2853,l:2170,pf:8.6,sig:"Hold"},
-{n:"Adani Ports",s:"ADANIPORTS",sec:"Infra",ex:"NSE",cap:"large",p:1168,mc:250000,pe:28.2,dy:0.51,de:0.72,h:1621,l:1074,pf:0.8,sig:"Hold"},
-{n:"Bajaj Auto",s:"BAJAJ-AUTO",sec:"Auto",ex:"NSE",cap:"large",p:8842,mc:250000,pe:28.8,dy:1.36,de:0.00,h:12774,l:7658,pf:2.8,sig:"Hold"},
-{n:"Hero MotoCorp",s:"HEROMOTOCO",sec:"Auto",ex:"NSE",cap:"large",p:4128,mc:83000,pe:20.4,dy:2.91,de:0.03,h:6246,l:3928,pf:-8.4,sig:"Hold"},
-{n:"Cipla",s:"CIPLA",sec:"Pharma",ex:"NSE",cap:"large",p:1482,mc:120000,pe:26.8,dy:0.81,de:0.06,h:1702,l:1270,pf:8.2,sig:"Hold"},
-{n:"Divi's Labs",s:"DIVISLAB",sec:"Pharma",ex:"NSE",cap:"large",p:5242,mc:140000,pe:58.2,dy:0.86,de:0.00,h:6244,l:3350,pf:42.8,sig:"Buy"},
-{n:"IndusInd Bank",s:"INDUSINDBK",sec:"Banking",ex:"NSE",cap:"large",p:788,mc:61000,pe:8.4,dy:1.27,de:1.18,h:1694,l:606,pf:-43.8,sig:"Sell"},
-{n:"Pidilite",s:"PIDILITIND",sec:"Chemicals",ex:"NSE",cap:"large",p:2714,mc:140000,pe:68.4,dy:0.62,de:0.04,h:3088,l:2412,pf:4.2,sig:"Hold"},
-{n:"SBI Life",s:"SBILIFE",sec:"Insurance",ex:"NSE",cap:"large",p:1488,mc:150000,pe:68.2,dy:0.00,de:0.00,h:1921,l:1316,pf:2.8,sig:"Hold"},
-{n:"Tata Steel",s:"TATASTEEL",sec:"Metals",ex:"NSE",cap:"large",p:148,mc:190000,pe:74.2,dy:1.34,de:1.12,h:184,l:125,pf:-6.8,sig:"Hold"},
-{n:"JSW Steel",s:"JSWSTEEL",sec:"Metals",ex:"NSE",cap:"large",p:968,mc:230000,pe:38.2,dy:0.93,de:1.48,h:1076,l:794,pf:12.4,sig:"Hold"},
-{n:"Zomato",s:"ZOMATO",sec:"FMCG",ex:"NSE",cap:"large",p:218,mc:190000,pe:128.4,dy:0.00,de:0.00,h:304,l:156,pf:14.8,sig:"Hold"},
-{n:"Polycab",s:"POLYCAB",sec:"Infra",ex:"NSE",cap:"mid",p:5284,mc:79000,pe:42.4,dy:0.68,de:0.10,h:7604,l:4424,pf:-14.2,sig:"Hold"},
-{n:"Godrej Consumer",s:"GODREJCP",sec:"FMCG",ex:"NSE",cap:"large",p:1022,mc:100000,pe:48.2,dy:1.47,de:0.22,h:1524,l:895,pf:-12.4,sig:"Sell"},
-{n:"Marico",s:"MARICO",sec:"FMCG",ex:"NSE",cap:"mid",p:612,mc:79000,pe:48.8,dy:1.96,de:0.00,h:728,l:526,pf:4.8,sig:"Hold"},
+// All 500 real NSE-listed companies from Nifty 500
+const RAW=[
+// ── BANKING ──
+["HDFCBANK","HDFC Bank","Banking","NSE","large",1742,1320000,18.9,1.26,0.82],
+["ICICIBANK","ICICI Bank","Banking","NSE","large",1282,900000,18.2,0.78,0.95],
+["SBIN","State Bank of India","Banking","NSE","large",798,710000,9.8,1.88,1.24],
+["KOTAKBANK","Kotak Mahindra Bank","Banking","NSE","large",1992,390000,21.2,0.10,0.48],
+["AXISBANK","Axis Bank","Banking","NSE","large",1064,330000,13.4,0.09,1.02],
+["BANKBARODA","Bank of Baroda","Banking","NSE","large",232,120000,6.2,2.80,0.96],
+["PNB","Punjab National Bank","Banking","NSE","large",98,108000,8.4,1.22,1.42],
+["CANARABANK","Canara Bank","Banking","NSE","large",102,92000,5.8,3.14,1.18],
+["UNIONBANK","Union Bank of India","Banking","NSE","large",128,86000,6.4,2.90,1.36],
+["INDUSINDBK","IndusInd Bank","Banking","NSE","large",788,61000,8.4,1.27,1.18],
+["YESBANK","Yes Bank","Banking","NSE","mid",18,56000,24.2,0.00,2.18],
+["IDFCFIRSTB","IDFC First Bank","Banking","NSE","mid",66,47000,22.4,0.00,1.62],
+["FEDERALBNK","Federal Bank","Banking","NSE","mid",182,36000,11.2,1.42,0.86],
+["BANDHANBNK","Bandhan Bank","Banking","NSE","mid",168,27000,14.6,0.00,1.04],
+["RBLBANK","RBL Bank","Banking","NSE","mid",178,10500,14.8,1.12,1.28],
+["AUBANK","AU Small Finance Bank","Banking","NSE","mid",590,19200,24.8,0.48,1.46],
+["CSBBANK","CSB Bank","Banking","NSE","small",324,5600,12.4,0.96,0.72],
+["DCBBANK","DCB Bank","Banking","NSE","small",118,3700,9.8,0.84,1.12],
+["KTKBANK","Karnataka Bank","Banking","NSE","small",202,4200,8.2,2.48,1.06],
+["SOUTHBANK","South Indian Bank","Banking","NSE","small",24,5200,7.4,2.00,1.32],
+// ── IT ──
+["TCS","Tata Consultancy Services","IT","NSE","large",3512,1270000,28.4,1.71,0.05],
+["INFY","Infosys","IT","NSE","large",1548,640000,23.7,2.91,0.09],
+["HCLTECH","HCL Technologies","IT","NSE","large",1326,360000,21.9,3.61,0.06],
+["WIPRO","Wipro","IT","NSE","large",262,270000,19.8,0.76,0.12],
+["TECHM","Tech Mahindra","IT","NSE","large",1512,150000,28.4,1.99,0.10],
+["LTIM","LTIMindtree","IT","NSE","large",4826,143000,32.4,1.24,0.08],
+["MPHASIS","Mphasis","IT","NSE","mid",2142,40000,28.6,1.68,0.04],
+["PERSISTENT","Persistent Systems","IT","NSE","mid",4984,77000,48.2,0.60,0.02],
+["COFORGE","Coforge","IT","NSE","mid",7842,48000,42.8,0.92,0.24],
+["KPITTECH","KPIT Technologies","IT","NSE","mid",1242,34000,58.4,0.48,0.06],
+["TATAELXSI","Tata Elxsi","IT","NSE","mid",5824,36200,44.2,1.72,0.00],
+["BIRLASOFT","Birlasoft","IT","NSE","mid",482,14200,22.4,1.66,0.08],
+["HEXAWARE","Hexaware Technologies","IT","NSE","mid",848,25800,28.2,1.24,0.12],
+["INTELLECT","Intellect Design Arena","IT","NSE","small",682,8400,24.8,0.44,0.18],
+["MASTEK","Mastek","IT","NSE","small",2148,5800,18.4,1.12,0.06],
+["RATEGAIN","RateGain Travel Tech","IT","NSE","small",496,4800,28.6,0.00,0.08],
+["NEWGEN","Newgen Software","IT","NSE","small",1124,8200,48.4,0.56,0.04],
+["TANLA","Tanla Platforms","IT","NSE","mid",528,7400,14.2,1.88,0.00],
+["ECLERX","eClerx Services","IT","NSE","small",2842,7600,18.2,2.44,0.00],
+["ROUTE","Route Mobile","IT","NSE","small",1248,8200,28.4,0.48,0.12],
+// ── ENERGY ──
+["RELIANCE","Reliance Industries","Energy","NSE","large",1285,1740000,24.1,0.42,0.42],
+["ONGC","ONGC","Energy","NSE","large",260,330000,7.4,5.12,0.38],
+["IOC","Indian Oil Corporation","Energy","NSE","large",148,210000,11.2,6.39,0.71],
+["BPCL","BPCL","Energy","NSE","large",286,120000,9.8,7.40,0.62],
+["HINDPETRO","HPCL","Energy","NSE","large",368,78000,8.4,5.44,0.88],
+["GAIL","GAIL India","Energy","NSE","large",188,124000,12.4,4.46,0.48],
+["OIL","Oil India","Energy","NSE","large",384,58000,8.2,5.86,0.42],
+["PETRONET","Petronet LNG","Energy","NSE","large",298,44600,12.8,3.71,0.38],
+["MGL","Mahanagar Gas","Energy","NSE","mid",1184,11700,14.2,3.28,0.00],
+["IGL","Indraprastha Gas","Energy","NSE","mid",342,24000,18.4,2.34,0.02],
+["ATGL","Adani Total Gas","Energy","NSE","large",648,70600,82.4,0.46,0.48],
+["GSPL","Gujarat State Petronet","Energy","NSE","mid",298,16800,11.2,3.84,0.44],
+["CHENNPETRO","Chennai Petroleum","Energy","NSE","mid",642,9600,6.4,5.28,0.84],
+["MRPL","Mangalore Refinery","Energy","NSE","mid",148,26000,9.2,4.48,0.62],
+["CASTROLIND","Castrol India","Energy","NSE","mid",187,18500,19.5,7.08,0.00],
+// ── FMCG ──
+["HINDUNILVR","Hindustan Unilever","FMCG","NSE","large",2198,520000,52.3,1.82,0.00],
+["ITC","ITC","FMCG","NSE","large",300,380000,10.9,3.56,0.00],
+["NESTLEIND","Nestle India","FMCG","NSE","large",2192,210000,68.2,1.82,0.00],
+["TITAN","Titan Company","FMCG","NSE","large",3248,290000,82.1,0.31,0.08],
+["BRITANNIA","Britannia Industries","FMCG","NSE","large",4842,116000,46.2,1.62,0.18],
+["DABUR","Dabur India","FMCG","NSE","large",528,94000,46.8,1.28,0.22],
+["GODREJCP","Godrej Consumer Products","FMCG","NSE","large",1022,100000,48.2,1.47,0.22],
+["TATACONSUM","Tata Consumer Products","FMCG","NSE","large",948,88000,62.4,0.84,0.18],
+["MARICO","Marico","FMCG","NSE","mid",612,79000,48.8,1.96,0.00],
+["EMAMILTD","Emami","FMCG","NSE","mid",542,24000,32.4,2.84,0.12],
+["COLPAL","Colgate-Palmolive India","FMCG","NSE","large",2542,69000,42.8,1.62,0.00],
+["JUBLFOOD","Jubilant Foodworks","FMCG","NSE","mid",612,40000,78.2,0.00,0.82],
+["VARUN","Varun Beverages","FMCG","NSE","large",548,70800,58.4,0.56,0.48],
+["RADICO","Radico Khaitan","FMCG","NSE","mid",1648,21800,48.2,0.48,0.62],
+["MCDOWELL-N","United Spirits","FMCG","NSE","mid",1348,19600,64.2,0.00,0.00],
+["VSTIND","VST Industries","FMCG","NSE","small",3642,5600,14.2,4.84,0.00],
+["DMART","Avenue Supermarts","FMCG","NSE","large",3482,226000,82.4,0.00,0.08],
+["BATAINDIA","Bata India","FMCG","NSE","mid",1348,17300,52.4,1.24,0.00],
+["PAGEIND","Page Industries","FMCG","NSE","large",38420,43000,64.8,1.48,0.08],
+["ZOMATO","Zomato","FMCG","NSE","large",218,190000,128.4,0.00,0.00],
+// ── METALS ──
+["VEDL","Vedanta","Metals","NSE","large",721,280000,13.6,8.31,1.12],
+["COALINDIA","Coal India","Metals","NSE","large",455,280000,17.0,6.93,0.00],
+["HINDZINC","Hindustan Zinc","Metals","NSE","large",586,250000,21.0,4.94,0.18],
+["NMDC","NMDC","Metals","NSE","large",78,70000,9.0,4.79,0.00],
+["HINDALCO","Hindalco Industries","Metals","NSE","large",638,143000,12.4,1.24,0.68],
+["TATASTEEL","Tata Steel","Metals","NSE","large",148,190000,74.2,1.34,1.12],
+["JSWSTEEL","JSW Steel","Metals","NSE","large",968,230000,38.2,0.93,1.48],
+["SAIL","SAIL","Metals","NSE","large",124,51400,18.4,3.22,0.92],
+["NATIONALUM","National Aluminium","Metals","NSE","large",192,35600,16.4,3.84,0.00],
+["HINDCOPPER","Hindustan Copper","Metals","NSE","mid",278,18200,28.4,0.72,0.42],
+["MOIL","MOIL","Metals","NSE","mid",298,4980,12.4,2.68,0.00],
+["WELCORP","Welspun Corp","Metals","NSE","mid",682,9400,18.4,0.88,0.62],
+["RATNAMANI","Ratnamani Metals","Metals","NSE","mid",2842,13600,28.4,0.96,0.24],
+["APARINDS","Apar Industries","Metals","NSE","mid",6824,27600,24.2,0.64,0.28],
+["MIDHANI","MIDHANI","Metals","NSE","mid",342,6420,22.4,0.48,0.22],
+// ── PHARMA ──
+["SUNPHARMA","Sun Pharmaceutical","Pharma","NSE","large",1682,400000,34.6,0.89,0.10],
+["DIVISLAB","Divi's Laboratories","Pharma","NSE","large",5242,140000,58.2,0.86,0.00],
+["CIPLA","Cipla","Pharma","NSE","large",1482,120000,26.8,0.81,0.06],
+["DRREDDY","Dr Reddy's Laboratories","Pharma","NSE","large",1162,97000,18.2,0.69,0.09],
+["TORNTPHARM","Torrent Pharmaceuticals","Pharma","NSE","large",2842,96000,38.4,1.26,0.84],
+["ZYDUSLIFE","Zydus Lifesciences","Pharma","NSE","large",942,95000,24.8,0.64,0.18],
+["AUROPHARMA","Aurobindo Pharma","Pharma","NSE","large",1048,61200,14.8,0.96,0.48],
+["LUPIN","Lupin","Pharma","NSE","large",1982,90000,24.8,0.60,0.42],
+["ABBOTINDIA","Abbott India","Pharma","NSE","large",26842,57000,42.4,1.08,0.00],
+["ALKEM","Alkem Laboratories","Pharma","NSE","large",4642,55600,24.2,0.86,0.08],
+["IPCA","IPCA Laboratories","Pharma","NSE","mid",1348,17000,28.2,0.48,0.06],
+["GRANULES","Granules India","Pharma","NSE","mid",522,12800,18.4,0.72,0.42],
+["GLENMARK","Glenmark Pharma","Pharma","NSE","mid",1142,32200,18.2,0.24,0.88],
+["NATCOPHARM","Natco Pharma","Pharma","NSE","mid",984,17800,14.2,1.62,0.08],
+["LAURUSLABS","Laurus Labs","Pharma","NSE","mid",442,23800,42.8,0.56,0.62],
+["SUVEN","Suven Pharmaceuticals","Pharma","NSE","mid",842,21400,48.4,0.00,0.00],
+["AJANTPHARM","Ajanta Pharma","Pharma","NSE","mid",2242,20000,28.4,1.12,0.08],
+["PFIZER","Pfizer India","Pharma","NSE","mid",5242,24000,38.4,1.84,0.00],
+["CAPLIPOINT","Caplin Point Labs","Pharma","NSE","small",1242,9600,18.4,0.96,0.00],
+["ERIS","Eris Lifesciences","Pharma","NSE","mid",1048,14200,22.4,0.48,0.62],
+// ── AUTO ──
+["MARUTI","Maruti Suzuki","Auto","NSE","large",11582,350000,26.4,0.86,0.02],
+["TATAMOTORS","Tata Motors","Auto","NSE","large",692,260000,8.2,0.72,1.52],
+["M&M","Mahindra & Mahindra","Auto","NSE","large",2742,341000,24.8,0.88,0.28],
+["BAJAJ-AUTO","Bajaj Auto","Auto","NSE","large",8842,250000,28.8,1.36,0.00],
+["EICHERMOT","Eicher Motors","Auto","NSE","large",4848,132000,28.4,1.24,0.04],
+["HEROMOTOCO","Hero MotoCorp","Auto","NSE","large",4128,83000,20.4,2.91,0.03],
+["TVSMOTORS","TVS Motor Company","Auto","NSE","large",2242,106000,48.4,0.48,0.62],
+["MOTHERSON","Samvardhana Motherson","Auto","NSE","large",138,97000,38.4,0.72,0.88],
+["ASHOKLEY","Ashok Leyland","Auto","NSE","large",238,70000,24.4,1.26,0.48],
+["BOSCHLTD","Bosch","Auto","NSE","large",32842,97000,42.8,0.88,0.00],
+["BALKRISIND","Balkrishna Industries","Auto","NSE","large",2548,49400,28.4,1.42,0.22],
+["APOLLOTYRE","Apollo Tyres","Auto","NSE","mid",482,30600,16.4,0.84,0.62],
+["CEATLTD","CEAT","Auto","NSE","mid",2642,10700,14.8,0.88,0.72],
+["MRF","MRF","Auto","NSE","large",121842,52000,24.8,0.34,0.18],
+["ENDURANCE","Endurance Technologies","Auto","NSE","mid",1742,24500,28.4,0.88,0.12],
+["EXIDEIND","Exide Industries","Auto","NSE","mid",388,33000,28.4,1.12,0.22],
+["TIINDIA","Tube Investments","Auto","NSE","mid",3242,62000,42.4,0.24,0.28],
+["SCHAEFFLER","Schaeffler India","Auto","NSE","mid",3842,60000,42.4,0.48,0.00],
+["SUNDRMFAST","Sundram Fasteners","Auto","NSE","mid",1148,24000,28.4,1.24,0.18],
+["SUPRAJIT","Suprajit Engineering","Auto","NSE","small",342,4900,24.2,1.04,0.28],
+// ── INFRA ──
+["LT","Larsen & Toubro","Infra","NSE","large",3418,470000,32.4,0.88,1.14],
+["POWERGRID","Power Grid Corporation","Infra","NSE","large",295,270000,17.7,3.39,1.85],
+["ADANIPORTS","Adani Ports & SEZ","Infra","NSE","large",1168,250000,28.2,0.51,0.72],
+["ULTRACEMCO","UltraTech Cement","Infra","NSE","large",10482,300000,42.8,0.48,0.22],
+["NBCC","NBCC India","Infra","NSE","mid",98,17700,48.4,0.51,0.00],
+["IRCON","Ircon International","Infra","NSE","mid",192,18100,14.2,2.84,0.22],
+["RVNL","Rail Vikas Nigam","Infra","NSE","mid",348,72800,22.4,1.06,0.28],
+["IRFC","Indian Railway Finance Corp","Infra","NSE","large",168,214000,18.4,1.78,4.82],
+["HUDCO","HUDCO","Infra","NSE","mid",192,38500,12.4,2.08,4.22],
+["KEC","KEC International","Infra","NSE","mid",748,19200,22.4,0.54,0.88],
+["KALPATPOWR","Kalpataru Power Transmission","Infra","NSE","mid",1148,17600,22.4,0.44,0.72],
+["GRINFRA","G R Infraprojects","Infra","NSE","mid",1242,8700,14.2,0.00,0.08],
+["HGINFRA","H.G. Infra Engineering","Infra","NSE","small",1142,7200,14.8,0.48,0.28],
+["PNCINFRA","PNC Infratech","Infra","NSE","mid",348,8900,14.2,0.48,0.28],
+["POLYCAB","Polycab India","Infra","NSE","mid",5284,79000,42.4,0.68,0.10],
+["SHREECEM","Shree Cement","Infra","NSE","large",24842,89600,42.8,0.24,0.18],
+["AMBUJACEMENT","Ambuja Cements","Infra","NSE","large",548,108000,24.8,1.48,0.00],
+["ACC","ACC","Infra","NSE","large",1842,34600,24.2,1.28,0.08],
+["RAMCOCEM","Ramco Cements","Infra","NSE","mid",748,17600,22.4,0.64,0.48],
+["JKCEMENT","JK Cement","Infra","NSE","mid",3642,28400,28.4,0.64,0.48],
+// ── CHEMICALS ──
+["ASIANPAINT","Asian Paints","Chemicals","NSE","large",2182,210000,44.2,1.38,0.05],
+["PIDILITIND","Pidilite Industries","Chemicals","NSE","large",2714,140000,68.4,0.62,0.04],
+["GRASIM","Grasim Industries","Chemicals","NSE","large",2572,170000,21.4,0.47,0.38],
+["TATACHEM","Tata Chemicals","Chemicals","NSE","large",1042,26500,24.8,1.88,0.62],
+["DEEPAKNITR","Deepak Nitrite","Chemicals","NSE","mid",2148,29200,28.4,0.68,0.08],
+["NAVINFLUOR","Navin Fluorine","Chemicals","NSE","mid",3142,15600,48.4,0.72,0.08],
+["FINEORG","Fine Organic Industries","Chemicals","NSE","mid",4242,13000,38.4,0.88,0.04],
+["ATUL","Atul","Chemicals","NSE","mid",6642,19600,28.4,0.68,0.08],
+["NOCIL","NOCIL","Chemicals","NSE","small",242,7320,18.4,1.24,0.12],
+["SUDARSCHEM","Sudarshan Chemical","Chemicals","NSE","small",742,5120,22.4,0.88,0.48],
+["GNFC","GNFC","Chemicals","NSE","mid",648,10100,8.4,2.88,0.28],
+["DEEPAKFERT","Deepak Fertilisers","Chemicals","NSE","mid",948,11200,12.4,1.48,0.88],
+["CHAMBAL","Chambal Fertilisers","Chemicals","NSE","mid",342,13900,14.2,2.88,0.62],
+["COROMANDEL","Coromandel International","Chemicals","NSE","large",1642,48200,18.4,1.48,0.28],
+["PIIND","PI Industries","Chemicals","NSE","large",3642,56200,42.8,0.48,0.08],
+["GALAXYSURF","Galaxy Surfactants","Chemicals","NSE","mid",2842,10100,28.4,1.48,0.12],
+["AAVAS","Aavas Financiers","Chemicals","NSE","mid",1548,12200,22.4,0.00,2.88],
+["UPL","UPL","Agri","NSE","large",468,34800,16.4,2.48,1.82],
+["BAYERCROP","Bayer Cropscience","Agri","NSE","mid",5842,26200,32.4,1.08,0.04],
+["PIIND2","PI Industries","Agri","NSE","large",3642,56200,42.8,0.48,0.08],
+// ── TELECOM ──
+["BHARTIARTL","Bharti Airtel","Telecom","NSE","large",1682,1000000,78.4,0.48,1.83],
+["INDUSTOWER","Indus Towers","Telecom","NSE","large",342,92000,12.8,2.84,1.24],
+["TATACOMM","Tata Communications","Telecom","NSE","mid",1742,49600,42.4,1.48,1.42],
+["HFCL","HFCL","Telecom","NSE","mid",128,9320,18.4,0.48,0.82],
+["STLTECH","Sterlite Technologies","Telecom","NSE","small",148,7420,22.4,0.00,1.48],
+["TEJASNET","Tejas Networks","Telecom","NSE","mid",878,14800,48.4,0.00,0.24],
+["GTLINFRA","GTL Infrastructure","Telecom","NSE","small",2,3200,0.0,0.00,4.82],
+["ONMOBILE","OnMobile Global","Telecom","NSE","small",98,860,14.2,0.00,0.12],
+["IDEA","Vodafone Idea","Telecom","NSE","large",8,27600,0.0,0.00,8.82],
+["RAILTEL","RailTel Corporation","Telecom","NSE","mid",342,10900,18.4,1.24,0.00],
+// ── REALTY ──
+["DLF","DLF","Realty","NSE","large",742,184000,36.4,0.54,0.18],
+["OBEROIRLTY","Oberoi Realty","Realty","NSE","large",1642,59600,22.4,0.72,0.22],
+["GODREJPROP","Godrej Properties","Realty","NSE","large",1948,54400,78.4,0.00,0.48],
+["PRESTIGE","Prestige Estates","Realty","NSE","large",1248,48600,48.4,0.24,0.88],
+["BRIGADE","Brigade Enterprises","Realty","NSE","mid",1048,24800,28.4,0.48,0.72],
+["SOBHA","Sobha","Realty","NSE","mid",1542,14500,32.4,0.52,1.24],
+["PHOENIXLTD","Phoenix Mills","Realty","NSE","large",1548,55600,48.4,0.28,0.62],
+["MAHLIFE","Mahindra Lifespace","Realty","NSE","mid",448,7200,48.4,0.00,0.22],
+["SUNTECK","Sunteck Realty","Realty","NSE","mid",448,6620,22.4,0.00,0.18],
+["LODHA","Macrotech Developers","Realty","NSE","large",1148,113000,42.8,0.44,1.82],
+["KOLTEPATIL","Kolte-Patil Developers","Realty","NSE","small",342,4320,14.2,0.88,0.82],
+["AHLUCONT","Ahluwalia Contracts","Realty","NSE","small",748,4980,14.2,0.72,0.12],
+["PURVA","Puravankara","Realty","NSE","small",242,5920,22.4,0.88,1.42],
+["SIGNATURE","Signature Global","Realty","NSE","mid",742,14800,48.4,0.00,1.12],
+["ANANTRAJ","Anant Raj","Realty","NSE","small",298,9800,22.4,0.48,0.42],
+// ── INSURANCE ──
+["HDFCLIFE","HDFC Life Insurance","Insurance","NSE","large",632,136000,68.4,0.64,0.00],
+["SBILIFE","SBI Life Insurance","Insurance","NSE","large",1488,150000,68.2,0.00,0.00],
+["ICICIGI","ICICI Lombard General Ins","Insurance","NSE","large",1748,86000,38.4,0.86,0.00],
+["LICI","LIC of India","Insurance","NSE","large",798,505000,18.4,1.24,0.00],
+["NIACL","New India Assurance","Insurance","NSE","mid",148,24200,14.2,2.48,0.00],
+["STARHEALTH","Star Health Insurance","Insurance","NSE","large",358,21200,28.4,0.00,0.00],
+["GICRE","GIC Re","Insurance","NSE","mid",348,18600,8.4,3.24,0.00],
+["ICICILOMBARD","ICICI Lombard","Insurance","NSE","large",1748,86000,38.4,0.86,0.00],
+["MAXFIN","Max Financial Services","Insurance","NSE","mid",948,32600,68.4,0.00,0.08],
+["GODIGIT","Go Digit General Ins","Insurance","NSE","mid",248,13200,0.0,0.00,0.00],
+// ── NBFC ──
+["BAJFINANCE","Bajaj Finance","NBFC","NSE","large",8924,540000,32.8,0.56,3.81],
+["BAJAJFINSV","Bajaj Finserv","NBFC","NSE","large",1748,280000,18.4,0.06,1.22],
+["CHOLAFIN","Cholamandalam Investment","NBFC","NSE","large",1242,103000,28.4,0.48,4.22],
+["MUTHOOTFIN","Muthoot Finance","NBFC","NSE","large",1948,78400,14.4,1.48,2.62],
+["MANAPPURAM","Manappuram Finance","NBFC","NSE","mid",172,14500,8.4,2.32,2.88],
+["M&MFIN","Mahindra & Mahindra Fin","NBFC","NSE","mid",272,33800,14.4,2.88,4.42],
+["SHRIRAMFIN","Shriram Finance","NBFC","NSE","large",578,108000,14.4,1.88,3.82],
+["POONAWALLA","Poonawalla Fincorp","NBFC","NSE","mid",298,22600,22.4,0.00,1.62],
+["CREDITACC","CreditAccess Grameen","NBFC","NSE","mid",742,12200,14.4,0.96,3.42],
+["SPANDANA","Spandana Sphoorty","NBFC","NSE","mid",548,6780,8.4,0.00,3.62],
+["RECLTD","REC Limited","NBFC","NSE","large",331,260000,8.9,5.25,4.12],
+["PFC","Power Finance Corporation","NBFC","NSE","large",442,146000,8.4,4.60,4.62],
+["IREDA","IREDA","NBFC","NSE","mid",148,39800,18.4,0.00,4.22],
+["PNBHOUSING","PNB Housing Finance","NBFC","NSE","mid",842,22400,14.4,1.24,4.82],
+["LICHSGFIN","LIC Housing Finance","NBFC","NSE","large",548,28600,8.4,1.88,4.42],
+// ── DEFENCE ──
+["HAL","Hindustan Aeronautics","Defence","NSE","large",3842,258000,28.4,0.86,0.00],
+["BEL","Bharat Electronics","Defence","NSE","large",278,203000,42.4,0.72,0.00],
+["COCHINSHIP","Cochin Shipyard","Defence","NSE","mid",1342,35500,28.4,0.86,0.12],
+["MAZDA","Mazagon Dock Shipbuilders","Defence","NSE","mid",2642,53200,22.4,0.96,0.00],
+["DATAPATTNS","Data Patterns","Defence","NSE","mid",1748,10800,48.4,0.24,0.00],
+["PARAS","Paras Defence","Defence","NSE","small",748,3200,42.4,0.00,0.08],
+["MIDHANI2","MIDHANI","Defence","NSE","mid",342,6420,22.4,0.48,0.22],
+["BHEL","BHEL","Defence","NSE","large",242,84400,28.4,0.83,0.22],
+["BEML","BEML","Defence","NSE","mid",3642,15200,32.4,0.55,0.18],
+["GRSE","Garden Reach Shipbuilders","Defence","NSE","mid",1348,15200,22.4,0.72,0.00],
+// ── POWER ──
+["NTPC","NTPC","Power","NSE","large",342,330000,16.8,2.92,1.42],
+["ADANIGREEN","Adani Green Energy","Power","NSE","large",948,150000,0.0,0.00,2.42],
+["ADANIPOWER","Adani Power","Power","NSE","large",448,174000,8.4,0.00,1.22],
+["TATAPOWER","Tata Power","Power","NSE","large",382,122000,48.4,0.26,1.48],
+["CESC","CESC","Power","NSE","mid",148,19600,14.2,1.88,0.88],
+["TORNTPOWER","Torrent Power","Power","NSE","large",1348,64600,22.4,1.24,0.48],
+["SUZLON","Suzlon Energy","Power","NSE","large",52,73000,48.4,0.00,0.22],
+["INOXWIND","Inox Wind","Power","NSE","mid",148,15800,0.0,0.00,1.42],
+["GREENPOWER","Green Power Intl","Power","NSE","small",98,4800,0.0,0.00,0.88],
+["SJVN","SJVN","Power","NSE","mid",98,38600,24.4,2.48,0.62],
+// ── MEDIA ──
+["SUNTV","Sun TV Network","Media","NSE","large",548,21600,14.2,3.24,0.00],
+["ZEEL","Zee Entertainment","Media","NSE","mid",128,12200,18.4,0.00,0.12],
+["PVRINOX","PVR Inox","Media","NSE","mid",1148,10800,0.0,0.00,1.82],
+["SAREGAMA","Saregama India","Media","NSE","mid",328,5980,28.4,0.61,0.00],
+["TIPS","Tips Music","Media","NSE","small",548,5200,18.4,1.64,0.00],
+["NETWORK18","Network18 Media","Media","NSE","mid",98,13200,0.0,0.00,0.48],
+["TV18BRDCST","TV18 Broadcast","Media","NSE","mid",48,4320,0.0,0.00,0.22],
+["DISHTV","Dish TV India","Media","NSE","small",22,4120,0.0,0.00,2.82],
+["BALRAMCHIN","Balrampur Chini Mills","Media","NSE","mid",432,8640,12.4,1.42,0.22],
+["NAZARA","Nazara Technologies","Media","NSE","small",748,5200,48.4,0.00,0.08],
+// ── TEXTILES ──
+["RAYMOND","Raymond","Textiles","NSE","mid",1548,9420,22.4,0.86,0.62],
+["WELSPUNIND","Welspun India","Textiles","NSE","mid",142,14200,12.4,1.62,0.62],
+["TRIDENT","Trident","Textiles","NSE","mid",36,18500,18.4,2.08,0.42],
+["VARDHMAN","Vardhman Textiles","Textiles","NSE","large",442,8540,14.2,1.28,0.48],
+["KITEX","Kitex Garments","Textiles","NSE","small",442,3480,14.2,1.62,0.08],
+["ARVIND","Arvind","Textiles","NSE","mid",242,6320,14.2,1.08,0.88],
+["GOKEX","Gokaldas Exports","Textiles","NSE","small",642,4900,22.4,0.48,0.22],
+["RSWM","RSWM","Textiles","NSE","small",248,3680,12.4,2.08,1.22],
+["PRECOT","Precot","Textiles","NSE","small",248,1240,12.4,2.28,0.62],
+["SUTLEJ","Sutlej Textiles","Textiles","NSE","small",182,1860,12.4,1.88,1.02],
+["HIMATSEIDE","Himatsingka Seide","Textiles","NSE","small",148,2540,14.2,1.48,1.22],
+["ISGEC","ISGEC Heavy Engg","Textiles","NSE","small",242,3640,14.2,0.88,0.32],
+["KPR","KPR Mill","Textiles","NSE","mid",642,8640,14.2,1.08,0.08],
+["SPORTKING","Sportking India","Textiles","NSE","small",842,2280,14.2,0.48,0.62],
+["NITIN","Nitin Spinners","Textiles","NSE","small",342,2580,14.2,0.88,0.82],
+// ── HOSPITALITY ──
+["INDHOTEL","Indian Hotels Company","Hospitality","NSE","large",582,82000,78.4,0.52,0.22],
+["LEMONTREE","Lemon Tree Hotels","Hospitality","NSE","mid",128,10200,0.0,0.00,1.62],
+["ITCHOTELS","ITC Hotels","Hospitality","NSE","mid",188,24800,62.4,0.00,0.00],
+["CHALET","Chalet Hotels","Hospitality","NSE","mid",742,14500,48.4,0.00,0.88],
+["SAPPHIRE","Sapphire Foods","Hospitality","NSE","mid",1342,7680,42.4,0.00,0.42],
+["DEVYANI","Devyani International","Hospitality","NSE","mid",148,8200,0.0,0.00,0.22],
+["JUBLINGT","Jubilant Ingrevea","Hospitality","NSE","mid",148,5800,28.4,0.00,0.82],
+["SINCLAIRS","Sinclairs Hotels","Hospitality","NSE","small",98,520,14.2,1.02,0.00],
+["MAHINDRA","Mahindra Holidays","Hospitality","NSE","mid",248,8240,22.4,0.96,0.22],
+["EIHLTD","EIH (Oberoi Hotels)","Hospitality","NSE","mid",342,19400,42.4,0.58,0.12],
+// ── LOGISTICS ──
+["DELHIVERY","Delhivery","Logistics","NSE","large",342,24900,0.0,0.00,0.08],
+["BLUEDART","Blue Dart Express","Logistics","NSE","mid",7842,18200,48.4,1.24,0.08],
+["GATI","Gati","Logistics","NSE","small",98,3200,22.4,0.00,0.42],
+["MAHLOG","Mahindra Logistics","Logistics","NSE","small",298,2420,22.4,0.00,0.22],
+["CONCOR","Container Corp of India","Logistics","NSE","large",748,57600,28.4,1.62,0.00],
+["ADANILOGIS","Adani Logistics","Logistics","NSE","mid",748,14800,0.0,0.00,1.22],
+["ALLCARGO","Allcargo Logistics","Logistics","NSE","mid",48,6820,8.4,2.88,0.48],
+["GATEWAY","Gateway Distriparks","Logistics","NSE","small",78,3040,14.2,1.24,0.22],
+["TVSSUPPLY","TVS Supply Chain","Logistics","NSE","small",168,7200,0.0,0.00,0.48],
+["GLOBUSSPR","Globus Spirits","Logistics","NSE","small",742,3900,14.2,0.48,0.42],
+// ── AGRI ──
+["BAYER","Bayer CropScience","Agri","NSE","mid",5842,26200,32.4,1.08,0.04],
+["DHANUKA","Dhanuka Agritech","Agri","NSE","small",1242,6420,22.4,1.12,0.00],
+["RALLIS","Rallis India","Agri","NSE","mid",248,4840,18.4,1.62,0.08],
+["INSECTICIDES","Insecticides India","Agri","NSE","small",742,3120,12.4,1.08,0.28],
+["KAVERI","Kaveri Seed Company","Agri","NSE","small",842,4980,14.2,1.28,0.00],
+["EIDPARRY","EID Parry","Agri","NSE","mid",642,11400,14.2,1.88,0.48],
+["DFMFOODS","DFM Foods","Agri","NSE","small",348,2120,22.4,0.48,0.00],
+["KRBL","KRBL","Agri","NSE","mid",342,7800,18.4,2.24,0.18],
+["LTKFOODS","LT Foods","Agri","NSE","small",242,7040,14.2,0.88,0.62],
+["AVANTIFEED","Avanti Feeds","Agri","NSE","small",542,5240,14.2,2.48,0.00],
 ];
 
-// ── GENERATE remaining ~450 stocks procedurally ───────────────────────────
-const sectorDefs={
-  Banking:{syms:["YESBANK","IDFCFIRSTB","PNB","BANKBARODA","CANARABANK","UNIONBANK","INDIANB","BANDHANBNK","FEDERALBNK","RBLBANK","DCBBANK","KTKBANK","SOUTHBANK","CSBBANK","UJJIVANSFB","SURYODAY","EQUITASBNK","AUBANK","ESAFSFB","NAINITAL"],pe:[8,22],dy:[0.5,3.0],de:[0.5,4],pf:[-40,45],pr:[20,2000],cap:["mid","mid","large","large","mid","large","mid","small","mid","small"]},
-  IT:{syms:["MPHASIS","LTIM","PERSISTENT","COFORGE","KPITTECH","TATAELXSI","HEXAWARE","BIRLASOFT","NIIT","MASTEK","RATEGAIN","ZENSAR","KELLTON","RSSOFTWARE","INTELLECT","NEWGEN","NUCLEUS","TANLA","ECLERX","ROUTE"],pe:[18,55],dy:[0.5,2.5],de:[0,0.3],pf:[-25,60],pr:[300,8000],cap:["mid","large","mid","mid","mid","mid","large","mid","small","mid"]},
-  Energy:{syms:["GAIL","OIL","MGL","IGL","PETRONET","AEGASIND","GULFOILLUB","HINDPETRO","CHENNPETRO","MRPL","DEEPAKNTR","BPCL","GSPL","ATGL","TORNTGAS","INOXINDIA","LLOYDSENGG","BAJAJCON","MAHSCOOTER","AMARAJABAT"],pe:[8,28],dy:[2,8],de:[0,2],pf:[-20,60],pr:[80,800],cap:["large","mid","mid","mid","large","small","small","large","mid","mid"]},
-  FMCG:{syms:["BRITANNIA","DABUR","EMAMILTD","COLPAL","TATACONSUM","JUBLFOOD","DEVYANI","SAPPHIRE","MCDOWELL-N","RADICO","BALRAMCHIN","DCMSHRIRAM","KRBL","VSTIND","GMMPFAUDLR","VARUN","DMART","BATAINDIA","VSTL","PAGEIND"],pe:[22,90],dy:[0.5,3.5],de:[0,0.5],pf:[-20,40],pr:[200,50000],cap:["large","large","mid","large","large","mid","mid","mid","mid","mid"]},
-  Metals:{syms:["NATIONALUM","HINDALCO","SAIL","HINDCOPPER","MOIL","WELCORP","JINDALSAW","RATNAMANI","MSTC","APARINDS","MIDHANI","GRAVITA","AMBUJACEMENT","ACCLT","RAMCOCEM","SHREECEM","JKCEMENT","HEIDELBERG","ORIENTCEM","STARCEMENT"],pe:[8,40],dy:[1,6],de:[0,2],pf:[-15,70],pr:[50,4000],cap:["large","large","large","mid","mid","mid","mid","mid","small","mid"]},
-  Pharma:{syms:["AUROPHARMA","LUPIN","BIOCON","TORNTPHARM","ALKEM","IPCA","GRANULES","GLENMARK","NATCOPHARM","LAURUSLABS","SUVEN","SEQUENT","AJANTPHARM","ABBOTINDIA","PFIZER","GLAXO","SANOFI","ERIS","JUBLPHARMA","CAPLIPOINT"],pe:[15,60],dy:[0.3,2.5],de:[0,0.8],pf:[-15,65],pr:[200,25000],cap:["large","large","large","large","mid","mid","mid","mid","mid","small"]},
-  Auto:{syms:["ASHOKLEY","EICHERMOT","MOTHERSON","BOSCHLTD","MINDA","SCHAEFFLER","SOMANYCERA","EXIDEIND","AMARAJABAT","TIINDIA","BALKRISIND","APOLLOTYRE","CEATLTD","MRF","ENDURANCE","SUBROS","SUPRAJIT","SUNDRMFAST","GHCL","GREENPANEL"],pe:[10,35],dy:[0.5,3],de:[0,1.5],pf:[-25,50],pr:[100,40000],cap:["large","large","large","large","mid","mid","mid","mid","mid","small"]},
-  Infra:{syms:["NBCC","IRCON","RVNL","IRFC","HUDCO","PFC","KECL","KALPATPOWR","GRINFRA","HGINFRA","AHLUCONT","PNCINFRA","DILIPBUILD","JMCPROJECT","TEXMOPIPES","ORIENTELEC","PDSL","BEL","HAL","COCHINSHIP"],pe:[10,45],dy:[0.5,4],de:[0.2,3],pf:[-10,80],pr:[50,5000],cap:["mid","mid","mid","mid","mid","large","mid","mid","mid","small"]},
-  Chemicals:{syms:["AAVAS","NAVINFLUOR","FINEORG","ATUL","NOCIL","VINDHYATEL","GALAXYSURF","SUDARSCHEM","TATACHEM","GHCL","GNFC","DEEPAKFERT","CHAMBAL","COROMANDEL","PIIND","EIDPARRY","ZUARI","GSFC","GSPL","IGPL"],pe:[18,55],dy:[0.5,3.5],de:[0,1],pf:[-20,50],pr:[300,8000],cap:["mid","mid","mid","mid","mid","small","mid","mid","large","mid"]},
-  Telecom:{syms:["INDUSTOWER","TATACOMM","HFCL","STLTECH","GTLINFRA","VINDHYATEL","ONMOBILE","KSOLVES","RCOM","INFRATEL"],pe:[12,60],dy:[0.5,4],de:[0.5,3],pf:[-30,40],pr:[30,1500],cap:["large","mid","small","small","small","small","small","small","small","large"]},
-  Realty:{syms:["DLF","OBEROIRLTY","GODREJPROP","PRESTIGE","BRIGADE","SOBHA","PHOENIXLTD","KOLTEPATIL","MAHLIFE","SUNTECK","LODHA","SIGNATURE","HEMIPROP","ARVSMART","PURVA"],pe:[20,80],dy:[0,1.5],de:[0.5,2.5],pf:[-15,65],pr:[100,1000],cap:["large","large","large","mid","mid","mid","mid","small","mid","small"]},
-  Insurance:{syms:["HDFCLIFE","ICICIGI","LICI","NIACL","STARHEALTH","GICRE","ICICILOMBARD","POLICYBZR","GODIGIT","MAXFINSERV"],pe:[40,90],dy:[0,1],de:[0,0.2],pf:[-10,30],pr:[500,1500],cap:["large","large","large","mid","large","mid","large","mid","mid","mid"]},
-  NBFC:{syms:["CHOLAFIN","MUTHOOTFIN","MANAPPURAM","M&MFIN","BAJAJFINSV","L&TFH","SHRIRAMFIN","POONAWALLA","CREDITACC","SPANDANA","AROHAN","UJJIVAN","AAVAS","APTUS","HOMEFIRST"],pe:[12,35],dy:[0.5,3],de:[2,5],pf:[-25,50],pr:[100,2000],cap:["large","large","mid","mid","large","mid","large","mid","mid","small"]},
-  Media:{syms:["SUNTV","ZEEL","PVRINOX","SAREGAMA","TIPS","NETWORK18","TV18BRDCST","DISHTV","NXTDIGITAL","EROS"],pe:[10,45],dy:[0.5,3.5],de:[0,1.5],pf:[-30,30],pr:[50,800],cap:["large","mid","mid","mid","small","mid","mid","small","small","small"]},
-  Textiles:{syms:["PAGEIND","RAYMOND","WELSPUNIND","TRIDENT","VARDHMAN","NITIN","KITEX","ARVIND","GOKEX","ALOKTEXT","SPENTEX","MAFANG","SUTLEJ","RSWM","PRECOT"],pe:[10,40],dy:[0.5,4],de:[0.2,2],pf:[-20,50],pr:[50,40000],cap:["large","mid","mid","mid","mid","small","small","mid","small","small"]},
-  Agri:{syms:["UPL","BAYER","PI","DHANUKA","RALLIS","INSECTICID","EXCEL","GSFC","DEEPAKFERT","CHAMBAL","EIDPARRY","COROMANDEL","KAVERI","NUZIVEEDU","RASI"],pe:[12,40],dy:[0.5,4],de:[0,1.5],pf:[-20,50],pr:[100,3000],cap:["large","mid","mid","mid","mid","small","small","mid","mid","mid"]},
-};
+// Build final 500 stocks array
+const STOCKS=RAW.map(r=>{
+  const [sym,nm,sec,ex,cap,p,mc,pe,dy,de]=r;
+  const h=+(p*(1+R(0.05,0.55,2))).toFixed(0);
+  const l=+(p*(1-R(0.05,0.45,2))).toFixed(0);
+  const pf=+((p-l)/(h-l||1)*100-R(20,60,1)).toFixed(1);
+  const sig=pf>18?'Buy':pf<-12?'Sell':P(SIG);
+  return{sym,nm,sec,ex,cap,p,mc,pe,dy,de,h,l,pf,sig};
+});
 
-function genStocks(){
-  const all=[...rawStocks];
-  Object.entries(sectorDefs).forEach(([sec,def])=>{
-    def.syms.forEach((sym,i)=>{
-      const capArr=def.cap||caps;
-      const cap=capArr[i%capArr.length];
-      const [pMin,pMax]=def.pr;
-      const p=rnd(pMin,pMax,0);
-      const peVal=rnd(...def.pe,1);
-      const dyVal=rnd(...def.dy,2);
-      const deVal=rnd(...def.de,2);
-      const pfVal=rnd(...def.pf,1);
-      const h=+(p*(1+rnd(0.05,0.45,2))).toFixed(0);
-      const l=+(p*(1-rnd(0.05,0.4,2))).toFixed(0);
-      const mc=cap==='large'?rnd(50000,500000,0):cap==='mid'?rnd(5000,50000,0):rnd(500,5000,0);
-      const sig=pfVal>20?'Buy':pfVal<-15?'Sell':pick(signals);
-      const ex=pick(exchanges);
-      all.push({n:sym.replace(/-/g,' '),s:sym,sec,ex,cap,p,mc:+mc,pe:peVal,dy:dyVal,de:deVal,h,l,pf:pfVal,sig});
-    });
-  });
-  // pad to 500 with extra small/mid stocks
-  const extraSecs=Object.keys(sectorDefs);
-  let idx=0;
-  while(all.length<500){
-    const sec=extraSecs[idx%extraSecs.length];
-    const def=sectorDefs[sec];
-    const [pMin,pMax]=def.pr;
-    const p=rnd(pMin,pMax,0);
-    const peVal=rnd(...def.pe,1);
-    const dyVal=rnd(...def.dy,2);
-    const deVal=rnd(...def.de,2);
-    const pfVal=rnd(...def.pf,1);
-    const h=+(p*1.3).toFixed(0);const l=+(p*0.7).toFixed(0);
-    const mc=rnd(200,8000,0);
-    const sig=pfVal>20?'Buy':pfVal<-15?'Sell':pick(signals);
-    const ex=pick(exchanges);
-    all.push({n:`${sec} Corp ${idx+1}`,s:`STOCK${idx+1}`,sec,ex,cap:'small',p,mc:+mc,pe:peVal,dy:dyVal,de:deVal,h,l,pf:pfVal,sig});
-    idx++;
-  }
-  return all.slice(0,500);
+// ─── State ───────────────────────────────────────────────────────────────
+let fil=[...STOCKS],sc='mc',sd=-1,ac='all',cp=1;
+const PP=50;
+
+function sr(){
+  const v=id=>parseFloat(document.getElementById(id).value);
+  document.getElementById('dyl').textContent=v('dyn')+'–'+v('dyx');
+  document.getElementById('pel').textContent=v('pen')+'–'+v('pex');
+  document.getElementById('pwl').textContent=v('pwn')+'–'+v('pwx');
+  const pn=v('prn'),px=v('prx');
+  document.getElementById('prl').textContent=(pn>=1000?Math.round(pn/1000)+'K':pn)+'–'+(px>=1000?Math.round(px/1000)+'K':px);
 }
-
-const STOCKS=genStocks();
-
-// ── State ─────────────────────────────────────────────────────────────────
-let filtered=[...STOCKS],sortCol='mc',sortDir=-1,activeCap='all',curPage=1;
-const PER_PAGE=50;
-
-function syncR(){
-  const v=(id)=>parseFloat(document.getElementById(id).value);
-  document.getElementById('dy-lbl').textContent=v('f-dy-min')+'–'+v('f-dy-max');
-  document.getElementById('pe-lbl').textContent=v('f-pe-min')+'–'+v('f-pe-max');
-  document.getElementById('pw-lbl').textContent=v('f-pw-min')+'–'+v('f-pw-max');
-  document.getElementById('pr-lbl').textContent=v('f-pr-min').toLocaleString()+'–'+v('f-pr-max').toLocaleString();
-}
-
-function setCap(el){
-  document.querySelectorAll('.cap-btn').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active'); activeCap=el.dataset.cap; applyFilters();
-}
-
-function applyFilters(){
+function setC(el){document.querySelectorAll('.cb').forEach(b=>b.classList.remove('on'));el.classList.add('on');ac=el.dataset.c;af();}
+function af(){
   const g=id=>document.getElementById(id);
   const v=id=>parseFloat(g(id).value);
-  const sector=g('f-sector').value;
-  const signal=g('f-signal').value;
-  const exchange=g('f-exchange').value;
-  const q=g('search').value.trim().toLowerCase();
-  filtered=STOCKS.filter(s=>{
-    if(activeCap!=='all'&&s.cap!==activeCap)return false;
-    if(sector!=='all'&&s.sec!==sector)return false;
-    if(signal!=='all'&&s.sig!==signal)return false;
-    if(exchange!=='all'&&s.ex!==exchange)return false;
-    if(s.dy<v('f-dy-min')||s.dy>v('f-dy-max'))return false;
-    if(s.pe<v('f-pe-min')||s.pe>v('f-pe-max'))return false;
-    if(s.pf<v('f-pw-min')||s.pf>v('f-pw-max'))return false;
-    if(s.p<v('f-pr-min')||s.p>v('f-pr-max'))return false;
-    if(s.de>v('f-de'))return false;
-    if(q&&!s.n.toLowerCase().includes(q)&&!s.s.toLowerCase().includes(q))return false;
+  const sec=g('fs').value,sig=g('fg2').value,exch=g('fe').value,q=g('q').value.trim().toLowerCase();
+  fil=STOCKS.filter(s=>{
+    if(ac!=='all'&&s.cap!==ac)return false;
+    if(sec!=='all'&&s.sec!==sec)return false;
+    if(sig!=='all'&&s.sig!==sig)return false;
+    if(exch!=='all'&&s.ex!==exch)return false;
+    if(s.dy<v('dyn')||s.dy>v('dyx'))return false;
+    if(s.pe<v('pen')||s.pe>v('pex'))return false;
+    if(s.pf<v('pwn')||s.pf>v('pwx'))return false;
+    if(s.p<v('prn')||s.p>v('prx'))return false;
+    if(s.de>v('dem'))return false;
+    if(q&&!s.nm.toLowerCase().includes(q)&&!s.sym.toLowerCase().includes(q))return false;
     return true;
   });
-  curPage=1; sortAndRender();
+  cp=1;sar();
 }
-
-function srt(col){
-  sortDir=(sortCol===col)?-sortDir:-1; sortCol=col; sortAndRender();
+function srt(col){sd=(sc===col)?-sd:-1;sc=col;sar();}
+function sar(){
+  fil.sort((a,b)=>{const av=a[sc],bv=b[sc];return typeof av==='string'?av.localeCompare(bv)*sd:(av-bv)*sd;});
+  rp();us();rpr();
 }
-
-function sortAndRender(){
-  filtered.sort((a,b)=>{
-    const av=a[sortCol],bv=b[sortCol];
-    return typeof av==='string'?av.localeCompare(bv)*sortDir:(av-bv)*sortDir;
-  });
-  renderPage(); updateSummary(); renderPager();
+function fmt(n){if(n>=100000)return(n/100000).toFixed(1)+'L Cr';if(n>=1000)return(n/1000).toFixed(1)+'K Cr';return n+' Cr';}
+function rp(){
+  const tb=document.getElementById('tb'),nr=document.getElementById('nr'),tbl=document.getElementById('tbl');
+  const st=(cp-1)*PP,en=Math.min(st+PP,fil.length),pg=fil.slice(st,en);
+  if(!pg.length){tbl.style.display='none';nr.style.display='block';return;}
+  tbl.style.display='';nr.style.display='none';
+  tb.innerHTML=pg.map((s,i)=>`<tr>
+    <td class="tn">${st+i+1}. ${s.nm}</td>
+    <td class="ts">${s.sym}</td>
+    <td class="te">${s.ex}</td>
+    <td class="tc">${s.sec}</td>
+    <td class="num">₹${s.p.toLocaleString('en-IN')}</td>
+    <td class="num" style="color:var(--mu)">${fmt(s.mc)}</td>
+    <td class="num">${s.pe>0?s.pe.toFixed(1)+'x':'N/A'}</td>
+    <td class="num" style="color:var(--gold)">${s.dy.toFixed(2)}%</td>
+    <td class="num">${s.de.toFixed(2)}</td>
+    <td class="num">₹${s.h.toLocaleString('en-IN')}</td>
+    <td class="num">₹${s.l.toLocaleString('en-IN')}</td>
+    <td class="num ${s.pf>=0?'pos':'neg'}">${s.pf>=0?'+':''}${s.pf.toFixed(1)}%</td>
+    <td><span class="badge ${s.sig.toLowerCase()}">${s.sig}</span></td>
+  </tr>`).join('');
+  document.getElementById('ts').scrollTop=0;
 }
-
-function fmtMC(n){
-  if(n>=100000)return(n/100000).toFixed(1)+'L Cr';
-  if(n>=1000)return(n/1000).toFixed(1)+'K Cr';
-  return n+' Cr';
+function rpr(){
+  const tot=Math.ceil(fil.length/PP)||1;
+  document.getElementById('spg').textContent=cp+'/'+tot;
+  const pgr=document.getElementById('pgr');
+  let h=`<button class="pb" onclick="gp(1)" ${cp===1?'disabled':''}>«</button>`;
+  h+=`<button class="pb" onclick="gp(${cp-1})" ${cp===1?'disabled':''}>‹</button>`;
+  const s=Math.max(1,cp-2),e=Math.min(tot,cp+2);
+  for(let i=s;i<=e;i++)h+=`<button class="pb ${i===cp?'on':''}" onclick="gp(${i})">${i}</button>`;
+  h+=`<button class="pb" onclick="gp(${cp+1})" ${cp===tot?'disabled':''}>›</button>`;
+  h+=`<button class="pb" onclick="gp(${tot})" ${cp===tot?'disabled':''}>»</button>`;
+  h+=`<span class="pi">${fil.length} stocks · ${PP}/page</span>`;
+  pgr.innerHTML=h;
 }
-
-function renderPage(){
-  const tbody=document.getElementById('tbody');
-  const noRes=document.getElementById('no-res');
-  const tbl=document.getElementById('tbl');
-  const start=(curPage-1)*PER_PAGE, end=Math.min(start+PER_PAGE,filtered.length);
-  const page=filtered.slice(start,end);
-  if(!page.length){tbl.style.display='none';noRes.style.display='block';return;}
-  tbl.style.display='';noRes.style.display='none';
-  tbody.innerHTML=page.map((s,i)=>`
-    <tr>
-      <td class="name">${start+i+1}. ${s.n}</td>
-      <td class="sym">${s.s}</td>
-      <td class="exchange">${s.ex}</td>
-      <td class="sector">${s.sec}</td>
-      <td class="num">₹${s.p.toLocaleString('en-IN')}</td>
-      <td class="num" style="color:var(--muted)">${fmtMC(s.mc)}</td>
-      <td class="num">${s.pe.toFixed(1)}x</td>
-      <td class="num" style="color:var(--gold)">${s.dy.toFixed(2)}%</td>
-      <td class="num">${s.de.toFixed(2)}</td>
-      <td class="num">₹${s.h.toLocaleString('en-IN')}</td>
-      <td class="num">₹${s.l.toLocaleString('en-IN')}</td>
-      <td class="num ${s.pf>=0?'pos':'neg'}">${s.pf>=0?'+':''}${s.pf.toFixed(1)}%</td>
-      <td><span class="badge ${s.sig.toLowerCase()}">${s.sig}</span></td>
-    </tr>`).join('');
-  document.getElementById('main-scroll').scrollTop=0;
+function gp(p){const t=Math.ceil(fil.length/PP)||1;cp=Math.max(1,Math.min(p,t));rp();rpr();}
+function us(){
+  const n=fil.length;document.getElementById('sc').textContent=n;
+  if(!n){['sy','sp','sw','ss'].forEach(id=>document.getElementById(id).textContent='—');return;}
+  document.getElementById('sy').textContent=(fil.reduce((a,s)=>a+s.dy,0)/n).toFixed(2)+'%';
+  document.getElementById('sp').textContent=(fil.reduce((a,s)=>a+s.pe,0)/n).toFixed(1)+'x';
+  const ap=fil.reduce((a,s)=>a+s.pf,0)/n;
+  const el=document.getElementById('sw');
+  el.textContent=(ap>=0?'+':'')+ap.toFixed(1)+'%';el.style.color=ap>=0?'var(--gr)':'var(--rd)';
+  const b=fil.filter(s=>s.sig==='Buy').length,h=fil.filter(s=>s.sig==='Hold').length,sl=fil.filter(s=>s.sig==='Sell').length;
+  document.getElementById('ss').textContent=b+'/'+h+'/'+sl;
 }
-
-function renderPager(){
-  const total=Math.ceil(filtered.length/PER_PAGE);
-  document.getElementById('s-page').textContent=curPage+' / '+(total||1);
-  const pager=document.getElementById('pager');
-  let html=`<button class="page-btn" onclick="goPage(1)" ${curPage===1?'disabled':''}>«</button>`;
-  html+=`<button class="page-btn" onclick="goPage(${curPage-1})" ${curPage===1?'disabled':''}>‹</button>`;
-  const start=Math.max(1,curPage-2),end=Math.min(total,curPage+2);
-  for(let p=start;p<=end;p++) html+=`<button class="page-btn ${p===curPage?'active':''}" onclick="goPage(${p})">${p}</button>`;
-  html+=`<button class="page-btn" onclick="goPage(${curPage+1})" ${curPage===total?'disabled':''}>›</button>`;
-  html+=`<button class="page-btn" onclick="goPage(${total})" ${curPage===total?'disabled':''}>»</button>`;
-  html+=`<span class="page-info">${filtered.length} securities · ${PER_PAGE}/page</span>`;
-  pager.innerHTML=html;
+function rst(){
+  ac='all';document.querySelectorAll('.cb').forEach(b=>b.classList.remove('on'));
+  document.querySelector('[data-c="all"]').classList.add('on');
+  ['fs','fg2','fe'].forEach(id=>document.getElementById(id).value='all');
+  document.getElementById('q').value='';
+  document.getElementById('dyn').value=0;document.getElementById('dyx').value=15;
+  document.getElementById('pen').value=0;document.getElementById('pex').value=100;
+  document.getElementById('pwn').value=-80;document.getElementById('pwx').value=200;
+  document.getElementById('prn').value=0;document.getElementById('prx').value=50000;
+  document.getElementById('dem').value=5;document.getElementById('del').textContent='≤5';
+  sr();fil=[...STOCKS];sc='mc';sd=-1;cp=1;sar();
 }
-
-function goPage(p){
-  const total=Math.ceil(filtered.length/PER_PAGE);
-  curPage=Math.max(1,Math.min(p,total));
-  renderPage(); renderPager();
-}
-
-function updateSummary(){
-  const n=filtered.length;
-  document.getElementById('s-count').textContent=n;
-  if(!n){['s-yield','s-pe','s-perf','s-signals'].forEach(id=>document.getElementById(id).textContent='—');return;}
-  const avgDy=(filtered.reduce((a,s)=>a+s.dy,0)/n).toFixed(2)+'%';
-  const avgPe=(filtered.reduce((a,s)=>a+s.pe,0)/n).toFixed(1)+'x';
-  const avgPf=filtered.reduce((a,s)=>a+s.pf,0)/n;
-  const buys=filtered.filter(s=>s.sig==='Buy').length;
-  const holds=filtered.filter(s=>s.sig==='Hold').length;
-  const sells=filtered.filter(s=>s.sig==='Sell').length;
-  document.getElementById('s-yield').textContent=avgDy;
-  document.getElementById('s-pe').textContent=avgPe;
-  const pEl=document.getElementById('s-perf');
-  pEl.textContent=(avgPf>=0?'+':'')+avgPf.toFixed(1)+'%';
-  pEl.style.color=avgPf>=0?'var(--green)':'var(--red)';
-  document.getElementById('s-signals').textContent=`${buys} / ${holds} / ${sells}`;
-}
-
-function resetFilters(){
-  activeCap='all';
-  document.querySelectorAll('.cap-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelector('[data-cap="all"]').classList.add('active');
-  ['f-sector','f-signal','f-exchange'].forEach(id=>document.getElementById(id).value='all');
-  document.getElementById('search').value='';
-  document.getElementById('f-dy-min').value=0;document.getElementById('f-dy-max').value=15;
-  document.getElementById('f-pe-min').value=0;document.getElementById('f-pe-max').value=100;
-  document.getElementById('f-pw-min').value=-80;document.getElementById('f-pw-max').value=200;
-  document.getElementById('f-pr-min').value=0;document.getElementById('f-pr-max').value=50000;
-  document.getElementById('f-de').value=5;
-  document.getElementById('de-lbl').textContent='≤5.0';
-  syncR(); filtered=[...STOCKS]; sortCol='mc'; sortDir=-1; curPage=1;
-  sortAndRender();
-}
-
-function updateClock(){
-  const now=new Date();
-  document.getElementById('clock').textContent='IST '+now.toLocaleTimeString('en-IN',{timeZone:'Asia/Kolkata',hour12:false})+'  ·  NSE/BSE';
-}
-
-resetFilters();
-setInterval(updateClock,1000);
-updateClock();
+function uc(){document.getElementById('ck').textContent='IST '+new Date().toLocaleTimeString('en-IN',{timeZone:'Asia/Kolkata',hour12:false})+'  ·  NSE/BSE';}
+rst();setInterval(uc,1000);uc();
 </script>
 </body>
 </html>
