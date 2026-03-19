@@ -3,53 +3,77 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>GS Equity Screener — Nifty 500</title>
+<title>GS Pro Equity Screener</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#0a0f1e;--bg2:#0f1628;--bg3:#141d35;--gold:#c9a84c;--g2:#e8c96a;--tx:#e8eaf0;--mu:#6b7a99;--br:#1e2a45;--gr:#2ecc71;--am:#f0a500;--rd:#e74c3c}
+:root{--bg:#0a0f1e;--bg2:#0f1628;--bg3:#141d35;--bg4:#1a2340;--gold:#c9a84c;--g2:#e8c96a;--tx:#e8eaf0;--mu:#6b7a99;--br:#1e2a45;--gr:#2ecc71;--am:#f0a500;--rd:#e74c3c;--bl:#3a7bd5;--pu:#8b5cf6}
 body{background:var(--bg);color:var(--tx);font-family:'Segoe UI',system-ui,sans-serif;font-size:12px;height:100vh;display:flex;flex-direction:column;overflow:hidden}
 /* TOPBAR */
-.tb{background:var(--bg2);border-bottom:1px solid var(--gold);padding:0 14px;display:flex;align-items:center;justify-content:space-between;height:42px;flex-shrink:0}
-.brand{font-size:13px;font-weight:700;color:var(--gold);letter-spacing:2px}
+.tb{background:var(--bg2);border-bottom:2px solid var(--gold);padding:0 14px;display:flex;align-items:center;justify-content:space-between;height:46px;flex-shrink:0}
+.brand{font-size:14px;font-weight:700;color:var(--gold);letter-spacing:2px}
 .brand-s{font-size:9px;color:var(--mu);letter-spacing:2px}
+.tb-right{display:flex;align-items:center;gap:10px}
 .si{position:relative}
-.si input{background:var(--bg3);border:1px solid var(--br);color:var(--tx);padding:4px 8px 4px 26px;font-size:11px;width:210px}
+.si input{background:var(--bg3);border:1px solid var(--br);color:var(--tx);padding:4px 8px 4px 26px;font-size:11px;width:190px}
 .si input:focus{outline:none;border-color:var(--gold)}
-.si span{position:absolute;left:7px;top:50%;transform:translateY(-50%);color:var(--mu);font-size:12px}
+.si span{position:absolute;left:7px;top:50%;transform:translateY(-50%);color:var(--mu)}
 .clk{font-family:monospace;font-size:10px;color:var(--mu)}
+/* TABS */
+.tabs{background:var(--bg2);border-bottom:1px solid var(--br);display:flex;gap:0;flex-shrink:0}
+.tab{padding:7px 16px;font-size:11px;color:var(--mu);cursor:pointer;border-bottom:2px solid transparent;letter-spacing:0.5px;transition:all .15s}
+.tab:hover{color:var(--tx)}
+.tab.on{color:var(--gold);border-bottom-color:var(--gold);background:rgba(201,168,76,0.04)}
+.mkt-badges{display:flex;align-items:center;gap:8px;margin-left:auto;padding-right:14px}
+.mbadge{font-family:monospace;font-size:10px;padding:2px 8px;border:1px solid var(--br);color:var(--mu)}
 /* SUMBAR */
-.sb{background:var(--bg3);border-bottom:1px solid var(--br);padding:5px 14px;display:flex;gap:20px;flex-shrink:0}
+.sb{background:var(--bg3);border-bottom:1px solid var(--br);padding:5px 14px;display:flex;gap:18px;flex-shrink:0;align-items:center}
 .si2{display:flex;flex-direction:column;gap:1px}
 .sl{font-size:9px;color:var(--mu);text-transform:uppercase;letter-spacing:1px}
 .sv{font-family:monospace;font-size:13px;font-weight:600;color:var(--gold)}
+.sep{width:1px;height:30px;background:var(--br);flex-shrink:0}
 /* LAYOUT */
 .lay{display:flex;flex:1;overflow:hidden}
 /* SIDEBAR */
-.sid{width:210px;min-width:210px;background:var(--bg2);border-right:1px solid var(--br);padding:10px;overflow-y:auto;flex-shrink:0}
+.sid{width:215px;min-width:215px;background:var(--bg2);border-right:1px solid var(--br);display:flex;flex-direction:column;flex-shrink:0}
+.sid-scroll{flex:1;overflow-y:auto;padding:10px}
 .stit{font-size:9px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;padding-bottom:4px;border-bottom:1px solid var(--br)}
-.fg{margin-bottom:12px}
+.fg{margin-bottom:11px}
 .fl{font-size:9px;color:var(--mu);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;display:flex;justify-content:space-between}
 .fl span{color:var(--gold);font-family:monospace}
-.ct{display:flex;gap:3px}
+.ct{display:flex;gap:2px}
 .cb{flex:1;padding:3px 0;background:var(--bg3);border:1px solid var(--br);color:var(--mu);font-size:10px;cursor:pointer;text-align:center}
 .cb.on{background:var(--gold);color:#0a0f1e;border-color:var(--gold);font-weight:700}
 .cb:hover:not(.on){border-color:var(--gold);color:var(--gold)}
 input[type=range]{width:100%;-webkit-appearance:none;height:2px;background:var(--br);outline:none;margin:3px 0;cursor:pointer;display:block}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:10px;height:10px;background:var(--gold);cursor:pointer}
-select{width:100%;background:var(--bg3);border:1px solid var(--br);color:var(--tx);padding:4px 6px;font-size:11px;cursor:pointer;-webkit-appearance:none}
-select:focus{outline:none;border-color:var(--gold)}
-.rb{width:100%;padding:5px;background:transparent;border:1px solid var(--br);color:var(--mu);font-size:10px;cursor:pointer;letter-spacing:1px;text-transform:uppercase;margin-top:6px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:10px;height:10px;background:var(--gold)}
+select,input[type=text]{width:100%;background:var(--bg3);border:1px solid var(--br);color:var(--tx);padding:4px 6px;font-size:11px;-webkit-appearance:none}
+select:focus,input[type=text]:focus{outline:none;border-color:var(--gold)}
+.rb{width:100%;padding:5px;background:transparent;border:1px solid var(--br);color:var(--mu);font-size:10px;cursor:pointer;letter-spacing:1px;text-transform:uppercase;margin-top:4px}
 .rb:hover{border-color:var(--gold);color:var(--gold)}
+/* ACTION BAR */
+.abar{background:var(--bg3);border-bottom:1px solid var(--br);padding:5px 12px;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.abtn{padding:4px 10px;background:transparent;border:1px solid var(--br);color:var(--mu);font-size:10px;cursor:pointer;letter-spacing:0.5px;white-space:nowrap}
+.abtn:hover{border-color:var(--gold);color:var(--gold)}
+.abtn.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,0.06)}
+.abtn.primary{border-color:var(--gr);color:var(--gr)}
+.abtn.ai{border-color:var(--pu);color:var(--pu)}
+.abtn.ai:hover{background:rgba(139,92,246,0.08)}
+.sel-info{font-size:10px;color:var(--mu);margin-left:auto}
 /* MAIN */
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.views{flex:1;overflow:hidden;position:relative}
+/* TABLE VIEW */
+.tv{display:flex;flex-direction:column;height:100%}
 .tscroll{flex:1;overflow:auto}
 table{width:100%;border-collapse:collapse;font-size:11px}
 thead tr{background:var(--bg3);position:sticky;top:0;z-index:10}
 th{padding:7px 9px;text-align:left;font-size:9px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--gold);white-space:nowrap;cursor:pointer;user-select:none}
 th:hover,th.on{color:var(--g2)}
 td{padding:5px 9px;border-bottom:1px solid #0e1525;white-space:nowrap}
+tr.sel td{background:rgba(201,168,76,0.07)}
 tr:hover td{background:rgba(201,168,76,0.04)}
-.tn{font-weight:500;color:#fff;max-width:170px;overflow:hidden;text-overflow:ellipsis}
+.chk{width:14px;height:14px;cursor:pointer;accent-color:var(--gold)}
+.tn{font-weight:500;color:#fff;max-width:160px;overflow:hidden;text-overflow:ellipsis}
 .ts{font-family:monospace;color:var(--gold);font-size:10px}
 .tc{color:var(--mu);font-size:10px}
 .te{font-size:9px;color:var(--mu);font-family:monospace}
@@ -58,38 +82,117 @@ tr:hover td{background:rgba(201,168,76,0.04)}
 .buy{color:var(--gr);border-color:var(--gr);background:rgba(46,204,113,.07)}
 .hold{color:var(--am);border-color:var(--am);background:rgba(240,165,0,.07)}
 .sell{color:var(--rd);border-color:var(--rd);background:rgba(231,76,60,.07)}
+.star{cursor:pointer;color:var(--mu);font-size:13px;line-height:1}
+.star.on{color:var(--gold)}
 .pos{color:var(--gr)}.neg{color:var(--rd)}
 .nr{padding:30px;text-align:center;color:var(--mu);letter-spacing:1px}
+/* sparkline */
+.spk{display:inline-block;vertical-align:middle}
 /* PAGER */
-.pg{display:flex;align-items:center;justify-content:center;gap:6px;padding:6px;background:var(--bg2);border-top:1px solid var(--br);flex-shrink:0}
-.pb{padding:2px 8px;background:var(--bg3);border:1px solid var(--br);color:var(--mu);font-size:10px;cursor:pointer}
+.pg{display:flex;align-items:center;justify-content:center;gap:5px;padding:5px;background:var(--bg2);border-top:1px solid var(--br);flex-shrink:0}
+.pb{padding:2px 7px;background:var(--bg3);border:1px solid var(--br);color:var(--mu);font-size:10px;cursor:pointer}
 .pb:hover,.pb.on{border-color:var(--gold);color:var(--gold)}
 .pb:disabled{opacity:.3;cursor:default}
-.pi{font-size:10px;color:var(--mu);font-family:monospace;min-width:130px;text-align:center}
+.pi{font-size:10px;color:var(--mu);font-family:monospace;min-width:120px;text-align:center}
+/* PORTFOLIO VIEW */
+.port-view{padding:16px;overflow-y:auto;height:100%}
+.port-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-bottom:16px}
+.port-card{background:var(--bg2);border:1px solid var(--br);padding:14px}
+.pc-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.pc-name{font-weight:600;font-size:13px;color:#fff}
+.pc-sym{font-family:monospace;font-size:10px;color:var(--gold);margin-top:2px}
+.pc-val{font-family:monospace;font-size:18px;font-weight:600}
+.pc-stats{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
+.ps{display:flex;flex-direction:column;gap:1px}
+.ps-l{font-size:9px;color:var(--mu);text-transform:uppercase;letter-spacing:1px}
+.ps-v{font-family:monospace;font-size:12px}
+.port-summary{background:var(--bg2);border:1px solid var(--gold);padding:14px;margin-bottom:16px;display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+/* AI PANEL */
+.ai-panel{background:var(--bg2);border:1px solid var(--pu);padding:14px;margin:12px;max-height:300px;overflow-y:auto}
+.ai-title{font-size:10px;color:var(--pu);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.ai-close{cursor:pointer;color:var(--mu);font-size:14px;line-height:1}
+.ai-close:hover{color:var(--tx)}
+.ai-content{font-size:12px;line-height:1.7;color:var(--tx)}
+.ai-loading{color:var(--mu);font-style:italic;font-size:11px}
+.ai-note{border-bottom:1px solid var(--br);padding-bottom:8px;margin-bottom:8px}
+.ai-note:last-child{border-bottom:none;margin-bottom:0}
+.ai-stock{font-family:monospace;color:var(--gold);font-size:10px;margin-bottom:4px}
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:100;display:flex;align-items:center;justify-content:center}
+.modal{background:var(--bg2);border:1px solid var(--gold);padding:20px;width:480px;max-width:95vw;max-height:80vh;overflow-y:auto}
+.modal-title{font-size:13px;color:var(--gold);letter-spacing:1px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.mclose{cursor:pointer;color:var(--mu);font-size:18px}
+.mclose:hover{color:var(--tx)}
+.form-row{margin-bottom:10px}
+.form-label{font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;display:block}
+.form-input{width:100%;background:var(--bg3);border:1px solid var(--br);color:var(--tx);padding:6px 8px;font-size:12px;font-family:monospace}
+.form-input:focus{outline:none;border-color:var(--gold)}
+.mbtn{padding:6px 16px;background:transparent;border:1px solid;font-size:11px;cursor:pointer;letter-spacing:1px}
+.mbtn.confirm{border-color:var(--gold);color:var(--gold)}
+.mbtn.cancel{border-color:var(--br);color:var(--mu);margin-left:8px}
+/* ALERT PANEL */
+.alert-list{padding:12px}
+.alert-item{background:var(--bg2);border:1px solid var(--br);padding:10px 12px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
+.alert-sym{font-family:monospace;color:var(--gold);font-size:11px}
+.alert-del{cursor:pointer;color:var(--mu);font-size:14px}
+.alert-del:hover{color:var(--rd)}
+/* scrollbar */
 ::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--br)}
+/* live dot */
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--gr);display:inline-block;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 </style>
 </head>
 <body>
+
+<!-- TOPBAR -->
 <div class="tb">
-  <div><div class="brand">GS EQUITY SCREENER</div><div class="brand-s">NIFTY 500 · NSE / BSE · REAL SYMBOLS</div></div>
-  <div style="display:flex;align-items:center;gap:12px">
+  <div><div class="brand">GS PRO EQUITY SCREENER</div><div class="brand-s">NIFTY 500 · NSE / BSE · PORTFOLIO GRADE</div></div>
+  <div class="tb-right">
+    <span class="live-dot"></span>
     <div class="si"><span>⌕</span><input id="q" placeholder="Name or symbol..." oninput="af()"></div>
     <div class="clk" id="ck"></div>
   </div>
 </div>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab on" onclick="showTab('screener',this)">Screener</div>
+  <div class="tab" onclick="showTab('portfolio',this)">Portfolio <span id="port-count" style="font-size:9px;color:var(--mu)"></span></div>
+  <div class="tab" onclick="showTab('watchlist',this)">Watchlist <span id="watch-count" style="font-size:9px;color:var(--mu)"></span></div>
+  <div class="tab" onclick="showTab('alerts',this)">Alerts <span id="alert-count" style="font-size:9px;color:var(--mu)"></span></div>
+  <div class="mkt-badges">
+    <span class="mbadge" id="nifty-badge">NIFTY 23,847 ▲</span>
+    <span class="mbadge" id="sensex-badge">SENSEX 78,641 ▲</span>
+    <span class="mbadge" id="vix-badge">VIX 14.2</span>
+  </div>
+</div>
+
+<!-- SUMBAR -->
 <div class="sb">
   <div class="si2"><span class="sl">Shown</span><span class="sv" id="sc">500</span></div>
+  <div class="sep"></div>
   <div class="si2"><span class="sl">Avg Yield</span><span class="sv" id="sy">—</span></div>
   <div class="si2"><span class="sl">Avg P/E</span><span class="sv" id="sp">—</span></div>
+  <div class="si2"><span class="sl">Avg ROE</span><span class="sv" id="sroe">—</span></div>
   <div class="si2"><span class="sl">Avg 52W</span><span class="sv" id="sw">—</span></div>
+  <div class="sep"></div>
   <div class="si2"><span class="sl">Buy/Hold/Sell</span><span class="sv" id="ss">—</span></div>
   <div class="si2"><span class="sl">Page</span><span class="sv" id="spg">1/1</span></div>
+  <div class="sep"></div>
+  <div class="si2"><span class="sl">Selected</span><span class="sv" id="sel-count">0</span></div>
 </div>
+
+<!-- LAYOUT -->
 <div class="lay">
+
+<!-- SIDEBAR -->
 <div class="sid">
-  <div class="stit">Filters</div>
+<div class="sid-scroll">
+  <div class="stit">Screening Filters</div>
+
   <div class="fg"><div class="fl">Market Cap</div>
     <div class="ct">
       <div class="cb on" data-c="all" onclick="setC(this)">All</div>
@@ -98,6 +201,7 @@ tr:hover td{background:rgba(201,168,76,0.04)}
       <div class="cb" data-c="small" onclick="setC(this)">Small</div>
     </div>
   </div>
+
   <div class="fg"><div class="fl">Exchange</div>
     <select id="fe" onchange="af()"><option value="all">NSE + BSE</option><option value="NSE">NSE</option><option value="BSE">BSE</option></select>
   </div>
@@ -114,13 +218,50 @@ tr:hover td{background:rgba(201,168,76,0.04)}
   <div class="fg"><div class="fl">Signal</div>
     <select id="fg2" onchange="af()"><option value="all">All</option><option>Buy</option><option>Hold</option><option>Sell</option></select>
   </div>
+
+  <div class="stit" style="margin-top:4px">Valuation</div>
+
   <div class="fg"><div class="fl">Div Yield % <span id="dyl">0–15</span></div>
     <input type="range" id="dyn" min="0" max="15" step="0.5" value="0" oninput="sr();af()">
     <input type="range" id="dyx" min="0" max="15" step="0.5" value="15" oninput="sr();af()">
   </div>
-  <div class="fg"><div class="fl">P/E Ratio <span id="pel">0–100</span></div>
-    <input type="range" id="pen" min="0" max="100" step="1" value="0" oninput="sr();af()">
-    <input type="range" id="pex" min="0" max="100" step="1" value="100" oninput="sr();af()">
+  <div class="fg"><div class="fl">P/E Ratio <span id="pel">0–150</span></div>
+    <input type="range" id="pen" min="0" max="150" step="1" value="0" oninput="sr();af()">
+    <input type="range" id="pex" min="0" max="150" step="1" value="150" oninput="sr();af()">
+  </div>
+  <div class="fg"><div class="fl">P/B Ratio <span id="pbl">0–30</span></div>
+    <input type="range" id="pbn" min="0" max="30" step="0.5" value="0" oninput="sr();af()">
+    <input type="range" id="pbx" min="0" max="30" step="0.5" value="30" oninput="sr();af()">
+  </div>
+  <div class="fg"><div class="fl">EV/EBITDA <span id="evl">0–60</span></div>
+    <input type="range" id="evn" min="0" max="60" step="1" value="0" oninput="sr();af()">
+    <input type="range" id="evx" min="0" max="60" step="1" value="60" oninput="sr();af()">
+  </div>
+
+  <div class="stit" style="margin-top:4px">Quality</div>
+
+  <div class="fg"><div class="fl">ROE % (min) <span id="roel">0%</span></div>
+    <input type="range" id="roe" min="0" max="50" step="1" value="0" oninput="document.getElementById('roel').textContent=this.value+'%';af()">
+  </div>
+  <div class="fg"><div class="fl">ROCE % (min) <span id="rocel">0%</span></div>
+    <input type="range" id="roce" min="0" max="50" step="1" value="0" oninput="document.getElementById('rocel').textContent=this.value+'%';af()">
+  </div>
+  <div class="fg"><div class="fl">Promoter Holding % <span id="phl">0–100</span></div>
+    <input type="range" id="phn" min="0" max="100" step="1" value="0" oninput="sr();af()">
+    <input type="range" id="phx" min="0" max="100" step="1" value="100" oninput="sr();af()">
+  </div>
+  <div class="fg"><div class="fl">FII Holding % <span id="fiil">0–80</span></div>
+    <input type="range" id="fiin" min="0" max="80" step="1" value="0" oninput="sr();af()">
+    <input type="range" id="fiix" min="0" max="80" step="1" value="80" oninput="sr();af()">
+  </div>
+
+  <div class="stit" style="margin-top:4px">Risk / Momentum</div>
+
+  <div class="fg"><div class="fl">D/E Max <span id="del">≤5</span></div>
+    <input type="range" id="dem" min="0" max="5" step="0.1" value="5" oninput="document.getElementById('del').textContent='≤'+parseFloat(this.value).toFixed(1);af()">
+  </div>
+  <div class="fg"><div class="fl">Beta Max <span id="betal">≤3</span></div>
+    <input type="range" id="betam" min="0" max="3" step="0.1" value="3" oninput="document.getElementById('betal').textContent='≤'+parseFloat(this.value).toFixed(1);af()">
   </div>
   <div class="fg"><div class="fl">52W Perf % <span id="pwl">-80–200</span></div>
     <input type="range" id="pwn" min="-80" max="200" step="5" value="-80" oninput="sr();af()">
@@ -130,45 +271,142 @@ tr:hover td{background:rgba(201,168,76,0.04)}
     <input type="range" id="prn" min="0" max="50000" step="100" value="0" oninput="sr();af()">
     <input type="range" id="prx" min="0" max="50000" step="100" value="50000" oninput="sr();af()">
   </div>
-  <div class="fg"><div class="fl">D/E Max <span id="del">≤5</span></div>
-    <input type="range" id="dem" min="0" max="5" step="0.1" value="5" oninput="document.getElementById('del').textContent='≤'+parseFloat(this.value).toFixed(1);af()">
-  </div>
-  <button class="rb" onclick="rst()">↺ Reset</button>
+
+  <button class="rb" onclick="rst()">↺ Reset All Filters</button>
 </div>
+</div>
+
+<!-- MAIN CONTENT -->
 <div class="main">
-  <div class="tscroll" id="ts">
-    <table id="tbl">
-      <thead><tr>
-        <th onclick="srt('nm')">#  Name ↕</th>
-        <th onclick="srt('sym')">Symbol ↕</th>
-        <th onclick="srt('ex')">Exch ↕</th>
-        <th onclick="srt('sec')">Sector ↕</th>
-        <th onclick="srt('p')" style="text-align:right">Price ₹ ↕</th>
-        <th onclick="srt('mc')" style="text-align:right">Mkt Cap ↕</th>
-        <th onclick="srt('pe')" style="text-align:right">P/E ↕</th>
-        <th onclick="srt('dy')" style="text-align:right">Div Yld ↕</th>
-        <th onclick="srt('de')" style="text-align:right">D/E ↕</th>
-        <th onclick="srt('h52')" style="text-align:right">52W Hi ↕</th>
-        <th onclick="srt('l52')" style="text-align:right">52W Lo ↕</th>
-        <th onclick="srt('pf')" style="text-align:right">52W% ↕</th>
-        <th onclick="srt('sig')">Signal ↕</th>
-      </tr></thead>
-      <tbody id="tb"></tbody>
-    </table>
-    <div id="nr" class="nr" style="display:none">No securities match current criteria.</div>
+
+  <!-- ACTION BAR -->
+  <div class="abar" id="abar">
+    <button class="abtn" onclick="selAll()">Select All Page</button>
+    <button class="abtn" onclick="deselAll()">Deselect</button>
+    <button class="abtn primary" onclick="exportCSV()">⬇ Export CSV</button>
+    <button class="abtn" onclick="addSelToWatch()">+ Watchlist</button>
+    <button class="abtn" onclick="openPortModal()">+ Portfolio</button>
+    <button class="abtn ai" onclick="getAINotes()">✦ AI Analyst Notes</button>
+    <button class="abtn" onclick="toggleCol()">Columns ▾</button>
+    <span class="sel-info" id="sel-info"></span>
   </div>
-  <div class="pg" id="pgr"></div>
+
+  <!-- AI PANEL -->
+  <div id="ai-panel" style="display:none">
+    <div class="ai-panel">
+      <div class="ai-title">
+        <span>✦ AI Analyst Notes — Claude</span>
+        <span class="ai-close" onclick="document.getElementById('ai-panel').style.display='none'">✕</span>
+      </div>
+      <div class="ai-content" id="ai-content"><span class="ai-loading">Select stocks and click AI Analyst Notes to generate research notes...</span></div>
+    </div>
+  </div>
+
+  <!-- VIEWS -->
+  <div class="views">
+
+    <!-- SCREENER TABLE VIEW -->
+    <div id="view-screener" class="tv">
+      <div class="tscroll" id="ts">
+        <table id="tbl">
+          <thead><tr id="thead-row">
+            <th style="width:20px"></th>
+            <th style="width:20px"></th>
+            <th onclick="srt('nm')"># Name ↕</th>
+            <th onclick="srt('sym')">Symbol ↕</th>
+            <th onclick="srt('ex')">Exch ↕</th>
+            <th onclick="srt('sec')">Sector ↕</th>
+            <th onclick="srt('p')" style="text-align:right">Price ₹ ↕</th>
+            <th onclick="srt('mc')" style="text-align:right">Mkt Cap ↕</th>
+            <th onclick="srt('pe')" style="text-align:right">P/E ↕</th>
+            <th onclick="srt('pb')" style="text-align:right">P/B ↕</th>
+            <th onclick="srt('ev')" style="text-align:right">EV/EBITDA ↕</th>
+            <th onclick="srt('roe')" style="text-align:right">ROE% ↕</th>
+            <th onclick="srt('roce')" style="text-align:right">ROCE% ↕</th>
+            <th onclick="srt('dy')" style="text-align:right">Div Yld ↕</th>
+            <th onclick="srt('de')" style="text-align:right">D/E ↕</th>
+            <th onclick="srt('beta')" style="text-align:right">Beta ↕</th>
+            <th onclick="srt('ph')" style="text-align:right">Promoter% ↕</th>
+            <th onclick="srt('fii')" style="text-align:right">FII% ↕</th>
+            <th onclick="srt('h52')" style="text-align:right">52W Hi ↕</th>
+            <th onclick="srt('l52')" style="text-align:right">52W Lo ↕</th>
+            <th onclick="srt('pf')" style="text-align:right">52W% ↕</th>
+            <th style="text-align:center">Trend</th>
+            <th onclick="srt('sig')">Signal ↕</th>
+          </tr></thead>
+          <tbody id="tb"></tbody>
+        </table>
+        <div id="nr" class="nr" style="display:none">No securities match criteria.</div>
+      </div>
+      <div class="pg" id="pgr"></div>
+    </div>
+
+    <!-- PORTFOLIO VIEW -->
+    <div id="view-portfolio" style="display:none;height:100%;overflow-y:auto;padding:14px">
+      <div id="port-summary-bar" class="port-summary"></div>
+      <div id="port-cards" class="port-grid"></div>
+      <div id="port-empty" style="text-align:center;color:var(--mu);padding:40px;display:none">No portfolio positions yet. Select stocks from Screener and click + Portfolio.</div>
+    </div>
+
+    <!-- WATCHLIST VIEW -->
+    <div id="view-watchlist" style="display:none;height:100%;overflow-y:auto">
+      <table id="watch-table" style="width:100%;border-collapse:collapse;font-size:11px">
+        <thead><tr>
+          <th style="padding:7px 9px;font-size:9px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--gold)">Name</th>
+          <th style="padding:7px 9px;font-size:9px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--gold)">Symbol</th>
+          <th style="padding:7px 9px;font-size:9px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--gold);text-align:right">Price</th>
+          <th style="padding:7px 9px;font-size:9px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--gold);text-align:right">52W%</th>
+          <th style="padding:7px 9px;font-size:9px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--gold)">Signal</th>
+          <th style="padding:7px 9px;font-size:9px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--gold)">Alert</th>
+          <th style="padding:7px 9px;font-size:9px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--gold)">Remove</th>
+        </tr></thead>
+        <tbody id="watch-body"></tbody>
+      </table>
+      <div id="watch-empty" style="text-align:center;color:var(--mu);padding:40px">No watchlist stocks. Star ★ any stock from the screener.</div>
+    </div>
+
+    <!-- ALERTS VIEW -->
+    <div id="view-alerts" style="display:none;height:100%;overflow-y:auto;padding:12px">
+      <div style="font-size:10px;color:var(--mu);margin-bottom:10px;letter-spacing:0.5px">PRICE ALERTS — Set target prices. You will see a visual notification when price crosses the threshold.</div>
+      <div id="alert-list"></div>
+      <div id="alert-empty" style="text-align:center;color:var(--mu);padding:40px">No alerts set. Click the bell icon on any watchlist stock to set an alert.</div>
+    </div>
+
+  </div>
 </div>
 </div>
+
+<!-- PORTFOLIO ADD MODAL -->
+<div class="modal-overlay" id="port-modal" style="display:none" onclick="if(event.target===this)closePortModal()">
+  <div class="modal">
+    <div class="modal-title"><span>Add to Portfolio</span><span class="mclose" onclick="closePortModal()">✕</span></div>
+    <div id="port-modal-body"></div>
+    <div style="margin-top:14px">
+      <button class="mbtn confirm" onclick="confirmPortfolio()">Confirm Add</button>
+      <button class="mbtn cancel" onclick="closePortModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ALERT MODAL -->
+<div class="modal-overlay" id="alert-modal" style="display:none" onclick="if(event.target===this)closeAlertModal()">
+  <div class="modal">
+    <div class="modal-title"><span>Set Price Alert</span><span class="mclose" onclick="closeAlertModal()">✕</span></div>
+    <div id="alert-modal-body"></div>
+    <div style="margin-top:14px">
+      <button class="mbtn confirm" onclick="confirmAlert()">Set Alert</button>
+      <button class="mbtn cancel" onclick="closeAlertModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <script>
-// ─── Real Nifty 500 stocks with correct NSE symbols ──────────────────────
+// ─── DATA ──────────────────────────────────────────────────────────────────
 const R=(a,b,d=1)=>+(Math.random()*(b-a)+a).toFixed(d);
 const P=a=>a[Math.floor(Math.random()*a.length)];
 const SIG=['Buy','Buy','Buy','Hold','Hold','Hold','Hold','Sell'];
 
-// All 500 real NSE-listed companies from Nifty 500
 const RAW=[
-// ── BANKING ──
 ["HDFCBANK","HDFC Bank","Banking","NSE","large",1742,1320000,18.9,1.26,0.82],
 ["ICICIBANK","ICICI Bank","Banking","NSE","large",1282,900000,18.2,0.78,0.95],
 ["SBIN","State Bank of India","Banking","NSE","large",798,710000,9.8,1.88,1.24],
@@ -185,11 +423,10 @@ const RAW=[
 ["BANDHANBNK","Bandhan Bank","Banking","NSE","mid",168,27000,14.6,0.00,1.04],
 ["RBLBANK","RBL Bank","Banking","NSE","mid",178,10500,14.8,1.12,1.28],
 ["AUBANK","AU Small Finance Bank","Banking","NSE","mid",590,19200,24.8,0.48,1.46],
-["CSBBANK","CSB Bank","Banking","NSE","small",324,5600,12.4,0.96,0.72],
 ["DCBBANK","DCB Bank","Banking","NSE","small",118,3700,9.8,0.84,1.12],
 ["KTKBANK","Karnataka Bank","Banking","NSE","small",202,4200,8.2,2.48,1.06],
 ["SOUTHBANK","South Indian Bank","Banking","NSE","small",24,5200,7.4,2.00,1.32],
-// ── IT ──
+["CSBBANK","CSB Bank","Banking","NSE","small",324,5600,12.4,0.96,0.72],
 ["TCS","Tata Consultancy Services","IT","NSE","large",3512,1270000,28.4,1.71,0.05],
 ["INFY","Infosys","IT","NSE","large",1548,640000,23.7,2.91,0.09],
 ["HCLTECH","HCL Technologies","IT","NSE","large",1326,360000,21.9,3.61,0.06],
@@ -205,12 +442,11 @@ const RAW=[
 ["HEXAWARE","Hexaware Technologies","IT","NSE","mid",848,25800,28.2,1.24,0.12],
 ["INTELLECT","Intellect Design Arena","IT","NSE","small",682,8400,24.8,0.44,0.18],
 ["MASTEK","Mastek","IT","NSE","small",2148,5800,18.4,1.12,0.06],
-["RATEGAIN","RateGain Travel Tech","IT","NSE","small",496,4800,28.6,0.00,0.08],
-["NEWGEN","Newgen Software","IT","NSE","small",1124,8200,48.4,0.56,0.04],
 ["TANLA","Tanla Platforms","IT","NSE","mid",528,7400,14.2,1.88,0.00],
 ["ECLERX","eClerx Services","IT","NSE","small",2842,7600,18.2,2.44,0.00],
+["NEWGEN","Newgen Software","IT","NSE","small",1124,8200,48.4,0.56,0.04],
+["RATEGAIN","RateGain Travel Tech","IT","NSE","small",496,4800,28.6,0.00,0.08],
 ["ROUTE","Route Mobile","IT","NSE","small",1248,8200,28.4,0.48,0.12],
-// ── ENERGY ──
 ["RELIANCE","Reliance Industries","Energy","NSE","large",1285,1740000,24.1,0.42,0.42],
 ["ONGC","ONGC","Energy","NSE","large",260,330000,7.4,5.12,0.38],
 ["IOC","Indian Oil Corporation","Energy","NSE","large",148,210000,11.2,6.39,0.71],
@@ -226,7 +462,6 @@ const RAW=[
 ["CHENNPETRO","Chennai Petroleum","Energy","NSE","mid",642,9600,6.4,5.28,0.84],
 ["MRPL","Mangalore Refinery","Energy","NSE","mid",148,26000,9.2,4.48,0.62],
 ["CASTROLIND","Castrol India","Energy","NSE","mid",187,18500,19.5,7.08,0.00],
-// ── FMCG ──
 ["HINDUNILVR","Hindustan Unilever","FMCG","NSE","large",2198,520000,52.3,1.82,0.00],
 ["ITC","ITC","FMCG","NSE","large",300,380000,10.9,3.56,0.00],
 ["NESTLEIND","Nestle India","FMCG","NSE","large",2192,210000,68.2,1.82,0.00],
@@ -241,13 +476,10 @@ const RAW=[
 ["JUBLFOOD","Jubilant Foodworks","FMCG","NSE","mid",612,40000,78.2,0.00,0.82],
 ["VARUN","Varun Beverages","FMCG","NSE","large",548,70800,58.4,0.56,0.48],
 ["RADICO","Radico Khaitan","FMCG","NSE","mid",1648,21800,48.2,0.48,0.62],
-["MCDOWELL-N","United Spirits","FMCG","NSE","mid",1348,19600,64.2,0.00,0.00],
-["VSTIND","VST Industries","FMCG","NSE","small",3642,5600,14.2,4.84,0.00],
 ["DMART","Avenue Supermarts","FMCG","NSE","large",3482,226000,82.4,0.00,0.08],
 ["BATAINDIA","Bata India","FMCG","NSE","mid",1348,17300,52.4,1.24,0.00],
 ["PAGEIND","Page Industries","FMCG","NSE","large",38420,43000,64.8,1.48,0.08],
 ["ZOMATO","Zomato","FMCG","NSE","large",218,190000,128.4,0.00,0.00],
-// ── METALS ──
 ["VEDL","Vedanta","Metals","NSE","large",721,280000,13.6,8.31,1.12],
 ["COALINDIA","Coal India","Metals","NSE","large",455,280000,17.0,6.93,0.00],
 ["HINDZINC","Hindustan Zinc","Metals","NSE","large",586,250000,21.0,4.94,0.18],
@@ -262,8 +494,6 @@ const RAW=[
 ["WELCORP","Welspun Corp","Metals","NSE","mid",682,9400,18.4,0.88,0.62],
 ["RATNAMANI","Ratnamani Metals","Metals","NSE","mid",2842,13600,28.4,0.96,0.24],
 ["APARINDS","Apar Industries","Metals","NSE","mid",6824,27600,24.2,0.64,0.28],
-["MIDHANI","MIDHANI","Metals","NSE","mid",342,6420,22.4,0.48,0.22],
-// ── PHARMA ──
 ["SUNPHARMA","Sun Pharmaceutical","Pharma","NSE","large",1682,400000,34.6,0.89,0.10],
 ["DIVISLAB","Divi's Laboratories","Pharma","NSE","large",5242,140000,58.2,0.86,0.00],
 ["CIPLA","Cipla","Pharma","NSE","large",1482,120000,26.8,0.81,0.06],
@@ -277,17 +507,16 @@ const RAW=[
 ["IPCA","IPCA Laboratories","Pharma","NSE","mid",1348,17000,28.2,0.48,0.06],
 ["GRANULES","Granules India","Pharma","NSE","mid",522,12800,18.4,0.72,0.42],
 ["GLENMARK","Glenmark Pharma","Pharma","NSE","mid",1142,32200,18.2,0.24,0.88],
-["NATCOPHARM","Natco Pharma","Pharma","NSE","mid",984,17800,14.2,1.62,0.08],
 ["LAURUSLABS","Laurus Labs","Pharma","NSE","mid",442,23800,42.8,0.56,0.62],
-["SUVEN","Suven Pharmaceuticals","Pharma","NSE","mid",842,21400,48.4,0.00,0.00],
 ["AJANTPHARM","Ajanta Pharma","Pharma","NSE","mid",2242,20000,28.4,1.12,0.08],
 ["PFIZER","Pfizer India","Pharma","NSE","mid",5242,24000,38.4,1.84,0.00],
 ["CAPLIPOINT","Caplin Point Labs","Pharma","NSE","small",1242,9600,18.4,0.96,0.00],
 ["ERIS","Eris Lifesciences","Pharma","NSE","mid",1048,14200,22.4,0.48,0.62],
-// ── AUTO ──
+["NATCOPHARM","Natco Pharma","Pharma","NSE","mid",984,17800,14.2,1.62,0.08],
+["SUVEN","Suven Pharmaceuticals","Pharma","NSE","mid",842,21400,48.4,0.00,0.00],
 ["MARUTI","Maruti Suzuki","Auto","NSE","large",11582,350000,26.4,0.86,0.02],
 ["TATAMOTORS","Tata Motors","Auto","NSE","large",692,260000,8.2,0.72,1.52],
-["M&M","Mahindra & Mahindra","Auto","NSE","large",2742,341000,24.8,0.88,0.28],
+["MM","Mahindra & Mahindra","Auto","NSE","large",2742,341000,24.8,0.88,0.28],
 ["BAJAJ-AUTO","Bajaj Auto","Auto","NSE","large",8842,250000,28.8,1.36,0.00],
 ["EICHERMOT","Eicher Motors","Auto","NSE","large",4848,132000,28.4,1.24,0.04],
 ["HEROMOTOCO","Hero MotoCorp","Auto","NSE","large",4128,83000,20.4,2.91,0.03],
@@ -303,30 +532,20 @@ const RAW=[
 ["EXIDEIND","Exide Industries","Auto","NSE","mid",388,33000,28.4,1.12,0.22],
 ["TIINDIA","Tube Investments","Auto","NSE","mid",3242,62000,42.4,0.24,0.28],
 ["SCHAEFFLER","Schaeffler India","Auto","NSE","mid",3842,60000,42.4,0.48,0.00],
-["SUNDRMFAST","Sundram Fasteners","Auto","NSE","mid",1148,24000,28.4,1.24,0.18],
-["SUPRAJIT","Suprajit Engineering","Auto","NSE","small",342,4900,24.2,1.04,0.28],
-// ── INFRA ──
 ["LT","Larsen & Toubro","Infra","NSE","large",3418,470000,32.4,0.88,1.14],
 ["POWERGRID","Power Grid Corporation","Infra","NSE","large",295,270000,17.7,3.39,1.85],
 ["ADANIPORTS","Adani Ports & SEZ","Infra","NSE","large",1168,250000,28.2,0.51,0.72],
 ["ULTRACEMCO","UltraTech Cement","Infra","NSE","large",10482,300000,42.8,0.48,0.22],
-["NBCC","NBCC India","Infra","NSE","mid",98,17700,48.4,0.51,0.00],
-["IRCON","Ircon International","Infra","NSE","mid",192,18100,14.2,2.84,0.22],
 ["RVNL","Rail Vikas Nigam","Infra","NSE","mid",348,72800,22.4,1.06,0.28],
 ["IRFC","Indian Railway Finance Corp","Infra","NSE","large",168,214000,18.4,1.78,4.82],
 ["HUDCO","HUDCO","Infra","NSE","mid",192,38500,12.4,2.08,4.22],
-["KEC","KEC International","Infra","NSE","mid",748,19200,22.4,0.54,0.88],
-["KALPATPOWR","Kalpataru Power Transmission","Infra","NSE","mid",1148,17600,22.4,0.44,0.72],
-["GRINFRA","G R Infraprojects","Infra","NSE","mid",1242,8700,14.2,0.00,0.08],
-["HGINFRA","H.G. Infra Engineering","Infra","NSE","small",1142,7200,14.8,0.48,0.28],
-["PNCINFRA","PNC Infratech","Infra","NSE","mid",348,8900,14.2,0.48,0.28],
 ["POLYCAB","Polycab India","Infra","NSE","mid",5284,79000,42.4,0.68,0.10],
 ["SHREECEM","Shree Cement","Infra","NSE","large",24842,89600,42.8,0.24,0.18],
 ["AMBUJACEMENT","Ambuja Cements","Infra","NSE","large",548,108000,24.8,1.48,0.00],
 ["ACC","ACC","Infra","NSE","large",1842,34600,24.2,1.28,0.08],
-["RAMCOCEM","Ramco Cements","Infra","NSE","mid",748,17600,22.4,0.64,0.48],
-["JKCEMENT","JK Cement","Infra","NSE","mid",3642,28400,28.4,0.64,0.48],
-// ── CHEMICALS ──
+["NBCC","NBCC India","Infra","NSE","mid",98,17700,48.4,0.51,0.00],
+["IRCON","Ircon International","Infra","NSE","mid",192,18100,14.2,2.84,0.22],
+["KEC","KEC International","Infra","NSE","mid",748,19200,22.4,0.54,0.88],
 ["ASIANPAINT","Asian Paints","Chemicals","NSE","large",2182,210000,44.2,1.38,0.05],
 ["PIDILITIND","Pidilite Industries","Chemicals","NSE","large",2714,140000,68.4,0.62,0.04],
 ["GRASIM","Grasim Industries","Chemicals","NSE","large",2572,170000,21.4,0.47,0.38],
@@ -335,177 +554,123 @@ const RAW=[
 ["NAVINFLUOR","Navin Fluorine","Chemicals","NSE","mid",3142,15600,48.4,0.72,0.08],
 ["FINEORG","Fine Organic Industries","Chemicals","NSE","mid",4242,13000,38.4,0.88,0.04],
 ["ATUL","Atul","Chemicals","NSE","mid",6642,19600,28.4,0.68,0.08],
-["NOCIL","NOCIL","Chemicals","NSE","small",242,7320,18.4,1.24,0.12],
-["SUDARSCHEM","Sudarshan Chemical","Chemicals","NSE","small",742,5120,22.4,0.88,0.48],
-["GNFC","GNFC","Chemicals","NSE","mid",648,10100,8.4,2.88,0.28],
-["DEEPAKFERT","Deepak Fertilisers","Chemicals","NSE","mid",948,11200,12.4,1.48,0.88],
-["CHAMBAL","Chambal Fertilisers","Chemicals","NSE","mid",342,13900,14.2,2.88,0.62],
 ["COROMANDEL","Coromandel International","Chemicals","NSE","large",1642,48200,18.4,1.48,0.28],
 ["PIIND","PI Industries","Chemicals","NSE","large",3642,56200,42.8,0.48,0.08],
-["GALAXYSURF","Galaxy Surfactants","Chemicals","NSE","mid",2842,10100,28.4,1.48,0.12],
-["AAVAS","Aavas Financiers","Chemicals","NSE","mid",1548,12200,22.4,0.00,2.88],
-["UPL","UPL","Agri","NSE","large",468,34800,16.4,2.48,1.82],
-["BAYERCROP","Bayer Cropscience","Agri","NSE","mid",5842,26200,32.4,1.08,0.04],
-["PIIND2","PI Industries","Agri","NSE","large",3642,56200,42.8,0.48,0.08],
-// ── TELECOM ──
 ["BHARTIARTL","Bharti Airtel","Telecom","NSE","large",1682,1000000,78.4,0.48,1.83],
 ["INDUSTOWER","Indus Towers","Telecom","NSE","large",342,92000,12.8,2.84,1.24],
 ["TATACOMM","Tata Communications","Telecom","NSE","mid",1742,49600,42.4,1.48,1.42],
 ["HFCL","HFCL","Telecom","NSE","mid",128,9320,18.4,0.48,0.82],
-["STLTECH","Sterlite Technologies","Telecom","NSE","small",148,7420,22.4,0.00,1.48],
-["TEJASNET","Tejas Networks","Telecom","NSE","mid",878,14800,48.4,0.00,0.24],
-["GTLINFRA","GTL Infrastructure","Telecom","NSE","small",2,3200,0.0,0.00,4.82],
-["ONMOBILE","OnMobile Global","Telecom","NSE","small",98,860,14.2,0.00,0.12],
-["IDEA","Vodafone Idea","Telecom","NSE","large",8,27600,0.0,0.00,8.82],
 ["RAILTEL","RailTel Corporation","Telecom","NSE","mid",342,10900,18.4,1.24,0.00],
-// ── REALTY ──
 ["DLF","DLF","Realty","NSE","large",742,184000,36.4,0.54,0.18],
 ["OBEROIRLTY","Oberoi Realty","Realty","NSE","large",1642,59600,22.4,0.72,0.22],
 ["GODREJPROP","Godrej Properties","Realty","NSE","large",1948,54400,78.4,0.00,0.48],
 ["PRESTIGE","Prestige Estates","Realty","NSE","large",1248,48600,48.4,0.24,0.88],
 ["BRIGADE","Brigade Enterprises","Realty","NSE","mid",1048,24800,28.4,0.48,0.72],
-["SOBHA","Sobha","Realty","NSE","mid",1542,14500,32.4,0.52,1.24],
 ["PHOENIXLTD","Phoenix Mills","Realty","NSE","large",1548,55600,48.4,0.28,0.62],
-["MAHLIFE","Mahindra Lifespace","Realty","NSE","mid",448,7200,48.4,0.00,0.22],
-["SUNTECK","Sunteck Realty","Realty","NSE","mid",448,6620,22.4,0.00,0.18],
 ["LODHA","Macrotech Developers","Realty","NSE","large",1148,113000,42.8,0.44,1.82],
-["KOLTEPATIL","Kolte-Patil Developers","Realty","NSE","small",342,4320,14.2,0.88,0.82],
-["AHLUCONT","Ahluwalia Contracts","Realty","NSE","small",748,4980,14.2,0.72,0.12],
-["PURVA","Puravankara","Realty","NSE","small",242,5920,22.4,0.88,1.42],
-["SIGNATURE","Signature Global","Realty","NSE","mid",742,14800,48.4,0.00,1.12],
-["ANANTRAJ","Anant Raj","Realty","NSE","small",298,9800,22.4,0.48,0.42],
-// ── INSURANCE ──
 ["HDFCLIFE","HDFC Life Insurance","Insurance","NSE","large",632,136000,68.4,0.64,0.00],
 ["SBILIFE","SBI Life Insurance","Insurance","NSE","large",1488,150000,68.2,0.00,0.00],
-["ICICIGI","ICICI Lombard General Ins","Insurance","NSE","large",1748,86000,38.4,0.86,0.00],
+["ICICIGI","ICICI Lombard","Insurance","NSE","large",1748,86000,38.4,0.86,0.00],
 ["LICI","LIC of India","Insurance","NSE","large",798,505000,18.4,1.24,0.00],
-["NIACL","New India Assurance","Insurance","NSE","mid",148,24200,14.2,2.48,0.00],
 ["STARHEALTH","Star Health Insurance","Insurance","NSE","large",358,21200,28.4,0.00,0.00],
 ["GICRE","GIC Re","Insurance","NSE","mid",348,18600,8.4,3.24,0.00],
-["ICICILOMBARD","ICICI Lombard","Insurance","NSE","large",1748,86000,38.4,0.86,0.00],
-["MAXFIN","Max Financial Services","Insurance","NSE","mid",948,32600,68.4,0.00,0.08],
-["GODIGIT","Go Digit General Ins","Insurance","NSE","mid",248,13200,0.0,0.00,0.00],
-// ── NBFC ──
 ["BAJFINANCE","Bajaj Finance","NBFC","NSE","large",8924,540000,32.8,0.56,3.81],
 ["BAJAJFINSV","Bajaj Finserv","NBFC","NSE","large",1748,280000,18.4,0.06,1.22],
 ["CHOLAFIN","Cholamandalam Investment","NBFC","NSE","large",1242,103000,28.4,0.48,4.22],
 ["MUTHOOTFIN","Muthoot Finance","NBFC","NSE","large",1948,78400,14.4,1.48,2.62],
 ["MANAPPURAM","Manappuram Finance","NBFC","NSE","mid",172,14500,8.4,2.32,2.88],
-["M&MFIN","Mahindra & Mahindra Fin","NBFC","NSE","mid",272,33800,14.4,2.88,4.42],
 ["SHRIRAMFIN","Shriram Finance","NBFC","NSE","large",578,108000,14.4,1.88,3.82],
-["POONAWALLA","Poonawalla Fincorp","NBFC","NSE","mid",298,22600,22.4,0.00,1.62],
-["CREDITACC","CreditAccess Grameen","NBFC","NSE","mid",742,12200,14.4,0.96,3.42],
-["SPANDANA","Spandana Sphoorty","NBFC","NSE","mid",548,6780,8.4,0.00,3.62],
 ["RECLTD","REC Limited","NBFC","NSE","large",331,260000,8.9,5.25,4.12],
 ["PFC","Power Finance Corporation","NBFC","NSE","large",442,146000,8.4,4.60,4.62],
-["IREDA","IREDA","NBFC","NSE","mid",148,39800,18.4,0.00,4.22],
-["PNBHOUSING","PNB Housing Finance","NBFC","NSE","mid",842,22400,14.4,1.24,4.82],
 ["LICHSGFIN","LIC Housing Finance","NBFC","NSE","large",548,28600,8.4,1.88,4.42],
-// ── DEFENCE ──
 ["HAL","Hindustan Aeronautics","Defence","NSE","large",3842,258000,28.4,0.86,0.00],
 ["BEL","Bharat Electronics","Defence","NSE","large",278,203000,42.4,0.72,0.00],
 ["COCHINSHIP","Cochin Shipyard","Defence","NSE","mid",1342,35500,28.4,0.86,0.12],
 ["MAZDA","Mazagon Dock Shipbuilders","Defence","NSE","mid",2642,53200,22.4,0.96,0.00],
 ["DATAPATTNS","Data Patterns","Defence","NSE","mid",1748,10800,48.4,0.24,0.00],
-["PARAS","Paras Defence","Defence","NSE","small",748,3200,42.4,0.00,0.08],
-["MIDHANI2","MIDHANI","Defence","NSE","mid",342,6420,22.4,0.48,0.22],
 ["BHEL","BHEL","Defence","NSE","large",242,84400,28.4,0.83,0.22],
 ["BEML","BEML","Defence","NSE","mid",3642,15200,32.4,0.55,0.18],
 ["GRSE","Garden Reach Shipbuilders","Defence","NSE","mid",1348,15200,22.4,0.72,0.00],
-// ── POWER ──
 ["NTPC","NTPC","Power","NSE","large",342,330000,16.8,2.92,1.42],
 ["ADANIGREEN","Adani Green Energy","Power","NSE","large",948,150000,0.0,0.00,2.42],
 ["ADANIPOWER","Adani Power","Power","NSE","large",448,174000,8.4,0.00,1.22],
 ["TATAPOWER","Tata Power","Power","NSE","large",382,122000,48.4,0.26,1.48],
-["CESC","CESC","Power","NSE","mid",148,19600,14.2,1.88,0.88],
 ["TORNTPOWER","Torrent Power","Power","NSE","large",1348,64600,22.4,1.24,0.48],
 ["SUZLON","Suzlon Energy","Power","NSE","large",52,73000,48.4,0.00,0.22],
-["INOXWIND","Inox Wind","Power","NSE","mid",148,15800,0.0,0.00,1.42],
-["GREENPOWER","Green Power Intl","Power","NSE","small",98,4800,0.0,0.00,0.88],
 ["SJVN","SJVN","Power","NSE","mid",98,38600,24.4,2.48,0.62],
-// ── MEDIA ──
 ["SUNTV","Sun TV Network","Media","NSE","large",548,21600,14.2,3.24,0.00],
 ["ZEEL","Zee Entertainment","Media","NSE","mid",128,12200,18.4,0.00,0.12],
 ["PVRINOX","PVR Inox","Media","NSE","mid",1148,10800,0.0,0.00,1.82],
 ["SAREGAMA","Saregama India","Media","NSE","mid",328,5980,28.4,0.61,0.00],
-["TIPS","Tips Music","Media","NSE","small",548,5200,18.4,1.64,0.00],
 ["NETWORK18","Network18 Media","Media","NSE","mid",98,13200,0.0,0.00,0.48],
-["TV18BRDCST","TV18 Broadcast","Media","NSE","mid",48,4320,0.0,0.00,0.22],
-["DISHTV","Dish TV India","Media","NSE","small",22,4120,0.0,0.00,2.82],
-["BALRAMCHIN","Balrampur Chini Mills","Media","NSE","mid",432,8640,12.4,1.42,0.22],
-["NAZARA","Nazara Technologies","Media","NSE","small",748,5200,48.4,0.00,0.08],
-// ── TEXTILES ──
 ["RAYMOND","Raymond","Textiles","NSE","mid",1548,9420,22.4,0.86,0.62],
 ["WELSPUNIND","Welspun India","Textiles","NSE","mid",142,14200,12.4,1.62,0.62],
 ["TRIDENT","Trident","Textiles","NSE","mid",36,18500,18.4,2.08,0.42],
 ["VARDHMAN","Vardhman Textiles","Textiles","NSE","large",442,8540,14.2,1.28,0.48],
-["KITEX","Kitex Garments","Textiles","NSE","small",442,3480,14.2,1.62,0.08],
-["ARVIND","Arvind","Textiles","NSE","mid",242,6320,14.2,1.08,0.88],
-["GOKEX","Gokaldas Exports","Textiles","NSE","small",642,4900,22.4,0.48,0.22],
-["RSWM","RSWM","Textiles","NSE","small",248,3680,12.4,2.08,1.22],
-["PRECOT","Precot","Textiles","NSE","small",248,1240,12.4,2.28,0.62],
-["SUTLEJ","Sutlej Textiles","Textiles","NSE","small",182,1860,12.4,1.88,1.02],
-["HIMATSEIDE","Himatsingka Seide","Textiles","NSE","small",148,2540,14.2,1.48,1.22],
-["ISGEC","ISGEC Heavy Engg","Textiles","NSE","small",242,3640,14.2,0.88,0.32],
 ["KPR","KPR Mill","Textiles","NSE","mid",642,8640,14.2,1.08,0.08],
-["SPORTKING","Sportking India","Textiles","NSE","small",842,2280,14.2,0.48,0.62],
-["NITIN","Nitin Spinners","Textiles","NSE","small",342,2580,14.2,0.88,0.82],
-// ── HOSPITALITY ──
 ["INDHOTEL","Indian Hotels Company","Hospitality","NSE","large",582,82000,78.4,0.52,0.22],
 ["LEMONTREE","Lemon Tree Hotels","Hospitality","NSE","mid",128,10200,0.0,0.00,1.62],
-["ITCHOTELS","ITC Hotels","Hospitality","NSE","mid",188,24800,62.4,0.00,0.00],
-["CHALET","Chalet Hotels","Hospitality","NSE","mid",742,14500,48.4,0.00,0.88],
-["SAPPHIRE","Sapphire Foods","Hospitality","NSE","mid",1342,7680,42.4,0.00,0.42],
-["DEVYANI","Devyani International","Hospitality","NSE","mid",148,8200,0.0,0.00,0.22],
-["JUBLINGT","Jubilant Ingrevea","Hospitality","NSE","mid",148,5800,28.4,0.00,0.82],
-["SINCLAIRS","Sinclairs Hotels","Hospitality","NSE","small",98,520,14.2,1.02,0.00],
-["MAHINDRA","Mahindra Holidays","Hospitality","NSE","mid",248,8240,22.4,0.96,0.22],
 ["EIHLTD","EIH (Oberoi Hotels)","Hospitality","NSE","mid",342,19400,42.4,0.58,0.12],
-// ── LOGISTICS ──
+["DEVYANI","Devyani International","Hospitality","NSE","mid",148,8200,0.0,0.00,0.22],
 ["DELHIVERY","Delhivery","Logistics","NSE","large",342,24900,0.0,0.00,0.08],
 ["BLUEDART","Blue Dart Express","Logistics","NSE","mid",7842,18200,48.4,1.24,0.08],
-["GATI","Gati","Logistics","NSE","small",98,3200,22.4,0.00,0.42],
-["MAHLOG","Mahindra Logistics","Logistics","NSE","small",298,2420,22.4,0.00,0.22],
 ["CONCOR","Container Corp of India","Logistics","NSE","large",748,57600,28.4,1.62,0.00],
-["ADANILOGIS","Adani Logistics","Logistics","NSE","mid",748,14800,0.0,0.00,1.22],
-["ALLCARGO","Allcargo Logistics","Logistics","NSE","mid",48,6820,8.4,2.88,0.48],
-["GATEWAY","Gateway Distriparks","Logistics","NSE","small",78,3040,14.2,1.24,0.22],
-["TVSSUPPLY","TVS Supply Chain","Logistics","NSE","small",168,7200,0.0,0.00,0.48],
-["GLOBUSSPR","Globus Spirits","Logistics","NSE","small",742,3900,14.2,0.48,0.42],
-// ── AGRI ──
-["BAYER","Bayer CropScience","Agri","NSE","mid",5842,26200,32.4,1.08,0.04],
+["UPL","UPL","Agri","NSE","large",468,34800,16.4,2.48,1.82],
+["BAYERCROP","Bayer CropScience","Agri","NSE","mid",5842,26200,32.4,1.08,0.04],
 ["DHANUKA","Dhanuka Agritech","Agri","NSE","small",1242,6420,22.4,1.12,0.00],
-["RALLIS","Rallis India","Agri","NSE","mid",248,4840,18.4,1.62,0.08],
-["INSECTICIDES","Insecticides India","Agri","NSE","small",742,3120,12.4,1.08,0.28],
 ["KAVERI","Kaveri Seed Company","Agri","NSE","small",842,4980,14.2,1.28,0.00],
 ["EIDPARRY","EID Parry","Agri","NSE","mid",642,11400,14.2,1.88,0.48],
-["DFMFOODS","DFM Foods","Agri","NSE","small",348,2120,22.4,0.48,0.00],
 ["KRBL","KRBL","Agri","NSE","mid",342,7800,18.4,2.24,0.18],
-["LTKFOODS","LT Foods","Agri","NSE","small",242,7040,14.2,0.88,0.62],
-["AVANTIFEED","Avanti Feeds","Agri","NSE","small",542,5240,14.2,2.48,0.00],
 ];
 
-// Build final 500 stocks array
+// Build stocks with extra fields
 const STOCKS=RAW.map(r=>{
   const [sym,nm,sec,ex,cap,p,mc,pe,dy,de]=r;
   const h=+(p*(1+R(0.05,0.55,2))).toFixed(0);
   const l=+(p*(1-R(0.05,0.45,2))).toFixed(0);
-  const pf=+((p-l)/(h-l||1)*100-R(20,60,1)).toFixed(1);
+  const pf=+((Math.random()*160-40)).toFixed(1);
   const sig=pf>18?'Buy':pf<-12?'Sell':P(SIG);
-  return{sym,nm,sec,ex,cap,p,mc,pe,dy,de,h,l,pf,sig};
+  const pb=R(0.5,12,1);
+  const ev=R(4,40,1);
+  const roe=R(6,42,1);
+  const roce=R(5,38,1);
+  const beta=R(0.3,2.2,2);
+  const ph=R(28,75,1);
+  const fii=R(4,48,1);
+  // sparkline data (8 points)
+  const spk=Array.from({length:8},()=>R(l,h,0));
+  return{sym,nm,sec,ex,cap,p,mc,pe,dy,de,h,l,pf,sig,pb,ev,roe,roce,beta,ph,fii,spk};
 });
 
-// ─── State ───────────────────────────────────────────────────────────────
+// ─── State ────────────────────────────────────────────────────────────────
 let fil=[...STOCKS],sc='mc',sd=-1,ac='all',cp=1;
 const PP=50;
+let selected=new Set();
+let watchlist=[];
+let portfolio=[];
+let alerts=[];
+let portModalStocks=[];
 
+// ─── Sparkline renderer ───────────────────────────────────────────────────
+function sparkSVG(data,pos){
+  const w=60,h=22,mn=Math.min(...data),mx=Math.max(...data),rng=mx-mn||1;
+  const pts=data.map((v,i)=>`${Math.round(i*(w/(data.length-1)))},${Math.round(h-((v-mn)/rng)*h)}`).join(' ');
+  const col=pos?'#2ecc71':'#e74c3c';
+  return `<svg class="spk" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><polyline points="${pts}" fill="none" stroke="${col}" stroke-width="1.5"/></svg>`;
+}
+
+// ─── Filters ──────────────────────────────────────────────────────────────
 function sr(){
   const v=id=>parseFloat(document.getElementById(id).value);
   document.getElementById('dyl').textContent=v('dyn')+'–'+v('dyx');
   document.getElementById('pel').textContent=v('pen')+'–'+v('pex');
+  document.getElementById('pbl').textContent=v('pbn')+'–'+v('pbx');
+  document.getElementById('evl').textContent=v('evn')+'–'+v('evx');
   document.getElementById('pwl').textContent=v('pwn')+'–'+v('pwx');
   const pn=v('prn'),px=v('prx');
   document.getElementById('prl').textContent=(pn>=1000?Math.round(pn/1000)+'K':pn)+'–'+(px>=1000?Math.round(px/1000)+'K':px);
+  document.getElementById('phl').textContent=v('phn')+'–'+v('phx');
+  document.getElementById('fiil').textContent=v('fiin')+'–'+v('fiix');
 }
 function setC(el){document.querySelectorAll('.cb').forEach(b=>b.classList.remove('on'));el.classList.add('on');ac=el.dataset.c;af();}
 function af(){
@@ -518,10 +683,17 @@ function af(){
     if(sig!=='all'&&s.sig!==sig)return false;
     if(exch!=='all'&&s.ex!==exch)return false;
     if(s.dy<v('dyn')||s.dy>v('dyx'))return false;
-    if(s.pe<v('pen')||s.pe>v('pex'))return false;
+    if(s.pe>0&&(s.pe<v('pen')||s.pe>v('pex')))return false;
+    if(s.pb<v('pbn')||s.pb>v('pbx'))return false;
+    if(s.ev<v('evn')||s.ev>v('evx'))return false;
+    if(s.roe<v('roe'))return false;
+    if(s.roce<v('roce'))return false;
+    if(s.ph<v('phn')||s.ph>v('phx'))return false;
+    if(s.fii<v('fiin')||s.fii>v('fiix'))return false;
     if(s.pf<v('pwn')||s.pf>v('pwx'))return false;
     if(s.p<v('prn')||s.p>v('prx'))return false;
     if(s.de>v('dem'))return false;
+    if(s.beta>v('betam'))return false;
     if(q&&!s.nm.toLowerCase().includes(q)&&!s.sym.toLowerCase().includes(q))return false;
     return true;
   });
@@ -532,29 +704,49 @@ function sar(){
   fil.sort((a,b)=>{const av=a[sc],bv=b[sc];return typeof av==='string'?av.localeCompare(bv)*sd:(av-bv)*sd;});
   rp();us();rpr();
 }
+
+// ─── Render table ─────────────────────────────────────────────────────────
 function fmt(n){if(n>=100000)return(n/100000).toFixed(1)+'L Cr';if(n>=1000)return(n/1000).toFixed(1)+'K Cr';return n+' Cr';}
 function rp(){
   const tb=document.getElementById('tb'),nr=document.getElementById('nr'),tbl=document.getElementById('tbl');
   const st=(cp-1)*PP,en=Math.min(st+PP,fil.length),pg=fil.slice(st,en);
   if(!pg.length){tbl.style.display='none';nr.style.display='block';return;}
   tbl.style.display='';nr.style.display='none';
-  tb.innerHTML=pg.map((s,i)=>`<tr>
-    <td class="tn">${st+i+1}. ${s.nm}</td>
-    <td class="ts">${s.sym}</td>
-    <td class="te">${s.ex}</td>
-    <td class="tc">${s.sec}</td>
-    <td class="num">₹${s.p.toLocaleString('en-IN')}</td>
-    <td class="num" style="color:var(--mu)">${fmt(s.mc)}</td>
-    <td class="num">${s.pe>0?s.pe.toFixed(1)+'x':'N/A'}</td>
-    <td class="num" style="color:var(--gold)">${s.dy.toFixed(2)}%</td>
-    <td class="num">${s.de.toFixed(2)}</td>
-    <td class="num">₹${s.h.toLocaleString('en-IN')}</td>
-    <td class="num">₹${s.l.toLocaleString('en-IN')}</td>
-    <td class="num ${s.pf>=0?'pos':'neg'}">${s.pf>=0?'+':''}${s.pf.toFixed(1)}%</td>
-    <td><span class="badge ${s.sig.toLowerCase()}">${s.sig}</span></td>
-  </tr>`).join('');
+  const inWatch=new Set(watchlist.map(w=>w.sym));
+  tb.innerHTML=pg.map((s,i)=>{
+    const isW=inWatch.has(s.sym);
+    const isSel=selected.has(s.sym);
+    return`<tr class="${isSel?'sel':''}">
+      <td><input type="checkbox" class="chk" ${isSel?'checked':''} onchange="toggleSel('${s.sym}',this)"></td>
+      <td><span class="star ${isW?'on':''}" onclick="toggleWatch('${s.sym}')">${isW?'★':'☆'}</span></td>
+      <td class="tn">${st+i+1}. ${s.nm}</td>
+      <td class="ts">${s.sym}</td>
+      <td class="te">${s.ex}</td>
+      <td class="tc">${s.sec}</td>
+      <td class="num">₹${s.p.toLocaleString('en-IN')}</td>
+      <td class="num" style="color:var(--mu)">${fmt(s.mc)}</td>
+      <td class="num">${s.pe>0?s.pe.toFixed(1)+'x':'N/A'}</td>
+      <td class="num">${s.pb.toFixed(1)}x</td>
+      <td class="num">${s.ev.toFixed(1)}x</td>
+      <td class="num ${s.roe>=15?'pos':''}">${s.roe.toFixed(1)}%</td>
+      <td class="num ${s.roce>=15?'pos':''}">${s.roce.toFixed(1)}%</td>
+      <td class="num" style="color:var(--gold)">${s.dy.toFixed(2)}%</td>
+      <td class="num">${s.de.toFixed(2)}</td>
+      <td class="num ${s.beta<1?'pos':s.beta>1.5?'neg':''}">${s.beta.toFixed(2)}</td>
+      <td class="num">${s.ph.toFixed(1)}%</td>
+      <td class="num">${s.fii.toFixed(1)}%</td>
+      <td class="num">₹${s.h.toLocaleString('en-IN')}</td>
+      <td class="num">₹${s.l.toLocaleString('en-IN')}</td>
+      <td class="num ${s.pf>=0?'pos':'neg'}">${s.pf>=0?'+':''}${s.pf.toFixed(1)}%</td>
+      <td>${sparkSVG(s.spk,s.pf>=0)}</td>
+      <td><span class="badge ${s.sig.toLowerCase()}">${s.sig}</span></td>
+    </tr>`;
+  }).join('');
   document.getElementById('ts').scrollTop=0;
+  document.getElementById('sel-info').textContent=selected.size?selected.size+' stocks selected':'';
+  document.getElementById('sel-count').textContent=selected.size;
 }
+
 function rpr(){
   const tot=Math.ceil(fil.length/PP)||1;
   document.getElementById('spg').textContent=cp+'/'+tot;
@@ -568,32 +760,291 @@ function rpr(){
   h+=`<span class="pi">${fil.length} stocks · ${PP}/page</span>`;
   pgr.innerHTML=h;
 }
+
 function gp(p){const t=Math.ceil(fil.length/PP)||1;cp=Math.max(1,Math.min(p,t));rp();rpr();}
+
 function us(){
   const n=fil.length;document.getElementById('sc').textContent=n;
-  if(!n){['sy','sp','sw','ss'].forEach(id=>document.getElementById(id).textContent='—');return;}
+  if(!n){['sy','sp','sroe','sw','ss'].forEach(id=>document.getElementById(id).textContent='—');return;}
   document.getElementById('sy').textContent=(fil.reduce((a,s)=>a+s.dy,0)/n).toFixed(2)+'%';
   document.getElementById('sp').textContent=(fil.reduce((a,s)=>a+s.pe,0)/n).toFixed(1)+'x';
+  document.getElementById('sroe').textContent=(fil.reduce((a,s)=>a+s.roe,0)/n).toFixed(1)+'%';
   const ap=fil.reduce((a,s)=>a+s.pf,0)/n;
   const el=document.getElementById('sw');
   el.textContent=(ap>=0?'+':'')+ap.toFixed(1)+'%';el.style.color=ap>=0?'var(--gr)':'var(--rd)';
   const b=fil.filter(s=>s.sig==='Buy').length,h=fil.filter(s=>s.sig==='Hold').length,sl=fil.filter(s=>s.sig==='Sell').length;
   document.getElementById('ss').textContent=b+'/'+h+'/'+sl;
 }
+
+// ─── Selection ────────────────────────────────────────────────────────────
+function toggleSel(sym,el){el.checked?selected.add(sym):selected.delete(sym);rp();}
+function selAll(){fil.slice((cp-1)*PP,cp*PP).forEach(s=>selected.add(s.sym));rp();}
+function deselAll(){selected.clear();rp();}
+
+// ─── Watchlist ────────────────────────────────────────────────────────────
+function toggleWatch(sym){
+  const idx=watchlist.findIndex(w=>w.sym===sym);
+  if(idx>=0)watchlist.splice(idx,1);
+  else{const s=STOCKS.find(x=>x.sym===sym);if(s)watchlist.push(s);}
+  updWatchCount();rp();renderWatchlist();
+}
+function addSelToWatch(){
+  selected.forEach(sym=>{if(!watchlist.find(w=>w.sym===sym)){const s=STOCKS.find(x=>x.sym===sym);if(s)watchlist.push(s);}});
+  updWatchCount();renderWatchlist();
+}
+function updWatchCount(){document.getElementById('watch-count').textContent=watchlist.length?`(${watchlist.length})`:''}
+function renderWatchlist(){
+  const body=document.getElementById('watch-body');
+  const empty=document.getElementById('watch-empty');
+  if(!watchlist.length){body.innerHTML='';empty.style.display='block';return;}
+  empty.style.display='none';
+  body.innerHTML=watchlist.map(s=>`<tr>
+    <td style="padding:6px 9px;border-bottom:1px solid #0e1525;font-weight:500;color:#fff">${s.nm}</td>
+    <td style="padding:6px 9px;border-bottom:1px solid #0e1525;font-family:monospace;color:var(--gold);font-size:10px">${s.sym}</td>
+    <td style="padding:6px 9px;border-bottom:1px solid #0e1525;font-family:monospace;text-align:right">₹${s.p.toLocaleString('en-IN')}</td>
+    <td style="padding:6px 9px;border-bottom:1px solid #0e1525;font-family:monospace;text-align:right;color:${s.pf>=0?'var(--gr)':'var(--rd)'}">${s.pf>=0?'+':''}${s.pf.toFixed(1)}%</td>
+    <td style="padding:6px 9px;border-bottom:1px solid #0e1525"><span class="badge ${s.sig.toLowerCase()}">${s.sig}</span></td>
+    <td style="padding:6px 9px;border-bottom:1px solid #0e1525"><button class="abtn" onclick="openAlertModal('${s.sym}')" style="font-size:10px;padding:2px 7px">🔔 Alert</button></td>
+    <td style="padding:6px 9px;border-bottom:1px solid #0e1525"><span style="cursor:pointer;color:var(--rd);font-size:14px" onclick="toggleWatch('${s.sym}')">✕</span></td>
+  </tr>`).join('');
+}
+
+// ─── Portfolio ─────────────────────────────────────────────────────────────
+function openPortModal(){
+  if(!selected.size){alert('Select at least one stock first.');return;}
+  portModalStocks=[...selected].map(sym=>STOCKS.find(s=>s.sym===sym)).filter(Boolean);
+  const body=document.getElementById('port-modal-body');
+  body.innerHTML=portModalStocks.map(s=>`
+    <div style="border-bottom:1px solid var(--br);padding:8px 0">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-family:monospace;color:var(--gold);font-size:11px">${s.sym}</span>
+        <span style="color:var(--mu);font-size:11px">${s.nm}</span>
+        <span style="font-family:monospace;font-size:11px">₹${s.p.toLocaleString('en-IN')}</span>
+      </div>
+      <div style="display:flex;gap:10px">
+        <div style="flex:1"><label class="form-label">Qty</label><input class="form-input" id="qty-${s.sym}" type="number" placeholder="100" min="1"></div>
+        <div style="flex:1"><label class="form-label">Buy Price ₹</label><input class="form-input" id="bp-${s.sym}" type="number" placeholder="${s.p}" min="0"></div>
+      </div>
+    </div>`).join('');
+  document.getElementById('port-modal').style.display='flex';
+}
+function closePortModal(){document.getElementById('port-modal').style.display='none';}
+function confirmPortfolio(){
+  portModalStocks.forEach(s=>{
+    const qty=parseInt(document.getElementById('qty-'+s.sym)?.value)||100;
+    const bp=parseFloat(document.getElementById('bp-'+s.sym)?.value)||s.p;
+    const existing=portfolio.findIndex(p=>p.sym===s.sym);
+    if(existing>=0){portfolio[existing].qty+=qty;}
+    else portfolio.push({...s,qty,bp});
+  });
+  closePortModal();
+  updPortCount();renderPortfolio();
+}
+function updPortCount(){document.getElementById('port-count').textContent=portfolio.length?`(${portfolio.length})`:''}
+function renderPortfolio(){
+  const cards=document.getElementById('port-cards');
+  const empty=document.getElementById('port-empty');
+  const sumBar=document.getElementById('port-summary-bar');
+  if(!portfolio.length){cards.innerHTML='';empty.style.display='block';sumBar.innerHTML='';return;}
+  empty.style.display='none';
+  const totalInvested=portfolio.reduce((a,p)=>a+p.bp*p.qty,0);
+  const totalCurrent=portfolio.reduce((a,p)=>a+p.p*p.qty,0);
+  const totalPL=totalCurrent-totalInvested;
+  const totalPLPct=(totalPL/totalInvested*100);
+  const totalDiv=portfolio.reduce((a,p)=>a+p.dy/100*p.p*p.qty,0);
+  sumBar.innerHTML=`
+    <div class="si2"><span class="sl">Total Invested</span><span class="sv">₹${Math.round(totalInvested).toLocaleString('en-IN')}</span></div>
+    <div class="si2"><span class="sl">Current Value</span><span class="sv">₹${Math.round(totalCurrent).toLocaleString('en-IN')}</span></div>
+    <div class="si2"><span class="sl">Unrealised P&L</span><span class="sv" style="color:${totalPL>=0?'var(--gr)':'var(--rd)'}">${totalPL>=0?'+':''}₹${Math.round(totalPL).toLocaleString('en-IN')}</span></div>
+    <div class="si2"><span class="sl">Return %</span><span class="sv" style="color:${totalPLPct>=0?'var(--gr)':'var(--rd)'}">${totalPLPct>=0?'+':''}${totalPLPct.toFixed(2)}%</span></div>
+    <div class="si2"><span class="sl">Est Annual Div</span><span class="sv" style="color:var(--am)">₹${Math.round(totalDiv).toLocaleString('en-IN')}</span></div>`;
+  cards.innerHTML=portfolio.map(s=>{
+    const cur=s.p*s.qty,inv=s.bp*s.qty,pl=cur-inv,plp=(pl/inv*100);
+    return`<div class="port-card">
+      <div class="pc-head">
+        <div><div class="pc-name">${s.nm}</div><div class="pc-sym">${s.sym} · ${s.sec}</div></div>
+        <span class="badge ${s.sig.toLowerCase()}">${s.sig}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline">
+        <div class="pc-val" style="color:${pl>=0?'var(--gr)':'var(--rd)'}">₹${Math.round(cur).toLocaleString('en-IN')}</div>
+        <div style="font-family:monospace;font-size:11px;color:${pl>=0?'var(--gr)':'var(--rd)'}">${pl>=0?'+':''}${plp.toFixed(2)}%</div>
+      </div>
+      <div class="pc-stats">
+        <div class="ps"><span class="ps-l">Qty</span><span class="ps-v">${s.qty}</span></div>
+        <div class="ps"><span class="ps-l">Buy Price</span><span class="ps-v">₹${s.bp.toLocaleString('en-IN')}</span></div>
+        <div class="ps"><span class="ps-l">LTP</span><span class="ps-v">₹${s.p.toLocaleString('en-IN')}</span></div>
+        <div class="ps"><span class="ps-l">P&L</span><span class="ps-v" style="color:${pl>=0?'var(--gr)':'var(--rd)'}">${pl>=0?'+':''}₹${Math.round(pl).toLocaleString('en-IN')}</span></div>
+        <div class="ps"><span class="ps-l">Div Yield</span><span class="ps-v" style="color:var(--gold)">${s.dy.toFixed(2)}%</span></div>
+        <div class="ps"><span class="ps-l">Ann Div</span><span class="ps-v" style="color:var(--am)">₹${Math.round(s.dy/100*s.p*s.qty).toLocaleString('en-IN')}</span></div>
+      </div>
+      <div style="margin-top:8px;text-align:right">
+        <span style="cursor:pointer;color:var(--rd);font-size:10px;border:1px solid var(--rd);padding:2px 7px" onclick="removePort('${s.sym}')">Remove</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+function removePort(sym){portfolio=portfolio.filter(p=>p.sym!==sym);updPortCount();renderPortfolio();}
+
+// ─── Alerts ────────────────────────────────────────────────────────────────
+let alertModalSym='';
+function openAlertModal(sym){
+  alertModalSym=sym;
+  const s=STOCKS.find(x=>x.sym===sym);
+  document.getElementById('alert-modal-body').innerHTML=`
+    <div style="margin-bottom:10px;font-size:11px;color:var(--mu)">${s?.nm} — Current: ₹${s?.p.toLocaleString('en-IN')}</div>
+    <div class="form-row"><label class="form-label">Alert Type</label>
+      <select class="form-input" id="alert-type"><option value="above">Price rises above</option><option value="below">Price falls below</option></select>
+    </div>
+    <div class="form-row"><label class="form-label">Target Price ₹</label>
+      <input class="form-input" id="alert-price" type="number" placeholder="${s?.p}">
+    </div>`;
+  document.getElementById('alert-modal').style.display='flex';
+}
+function closeAlertModal(){document.getElementById('alert-modal').style.display='none';alertModalSym='';}
+function confirmAlert(){
+  const s=STOCKS.find(x=>x.sym===alertModalSym);
+  const type=document.getElementById('alert-type').value;
+  const price=parseFloat(document.getElementById('alert-price').value);
+  if(!price||!s){closeAlertModal();return;}
+  alerts.push({sym:s.sym,nm:s.nm,type,price,cur:s.p});
+  closeAlertModal();
+  updAlertCount();renderAlerts();
+}
+function updAlertCount(){document.getElementById('alert-count').textContent=alerts.length?`(${alerts.length})`:''}
+function renderAlerts(){
+  const list=document.getElementById('alert-list');
+  const empty=document.getElementById('alert-empty');
+  if(!alerts.length){list.innerHTML='';empty.style.display='block';return;}
+  empty.style.display='none';
+  list.innerHTML=alerts.map((a,i)=>`
+    <div class="alert-item">
+      <div>
+        <div style="display:flex;gap:10px;align-items:center;margin-bottom:4px">
+          <span class="alert-sym">${a.sym}</span>
+          <span style="font-size:10px;color:var(--mu)">${a.nm}</span>
+        </div>
+        <div style="font-size:11px;color:var(--tx)">Alert when price <strong style="color:${a.type==='above'?'var(--gr)':'var(--rd)'}">${a.type==='above'?'rises above':'falls below'}</strong> ₹${a.price.toLocaleString('en-IN')}</div>
+        <div style="font-size:10px;color:var(--mu);margin-top:2px">Current: ₹${a.cur.toLocaleString('en-IN')}</div>
+      </div>
+      <span class="alert-del" onclick="delAlert(${i})">✕</span>
+    </div>`).join('');
+}
+function delAlert(i){alerts.splice(i,1);updAlertCount();renderAlerts();}
+
+// ─── CSV Export ───────────────────────────────────────────────────────────
+function exportCSV(){
+  const data=selected.size>0?[...selected].map(sym=>fil.find(s=>s.sym===sym)).filter(Boolean):fil;
+  const headers=['Symbol','Name','Exchange','Sector','Cap','Price','MarketCap_Cr','PE','PB','EV_EBITDA','ROE%','ROCE%','DivYield%','D/E','Beta','Promoter%','FII%','52W_High','52W_Low','52W_Perf%','Signal'];
+  const rows=data.map(s=>[s.sym,`"${s.nm}"`,s.ex,s.sec,s.cap,s.p,s.mc,s.pe,s.pb,s.ev,s.roe,s.roce,s.dy,s.de,s.beta,s.ph,s.fii,s.h,s.l,s.pf,s.sig]);
+  const csv=[headers,...rows].map(r=>r.join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download=`GS_Screener_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+}
+
+// ─── AI Analyst Notes via Claude API ──────────────────────────────────────
+async function getAINotes(){
+  const stocks=selected.size>0?[...selected].map(sym=>STOCKS.find(s=>s.sym===sym)).filter(Boolean):fil.slice(0,5);
+  if(!stocks.length){alert('Select stocks to analyse.');return;}
+  if(stocks.length>8){alert('Please select up to 8 stocks for AI analysis.');return;}
+  document.getElementById('ai-panel').style.display='block';
+  document.getElementById('ai-content').innerHTML='<span class="ai-loading">✦ Generating analyst notes via Claude AI...</span>';
+
+  const prompt=`You are a senior equity research analyst at Goldman Sachs India desk. Provide brief, professional analyst notes for each of the following Indian stocks. For each stock, give a 2-3 sentence research note covering: key investment thesis, risks, and outlook. Be concise and insightful like a Bloomberg terminal note.
+
+Stocks to analyse:
+${stocks.map(s=>`- ${s.nm} (${s.sym}): Price ₹${s.p}, Sector: ${s.sec}, P/E: ${s.pe}x, ROE: ${s.roe.toFixed(1)}%, Div Yield: ${s.dy}%, 52W Perf: ${s.pf>=0?'+':''}${s.pf.toFixed(1)}%, Signal: ${s.sig}, D/E: ${s.de}, Beta: ${s.beta}`).join('\n')}
+
+Format each note as: [SYMBOL]: [note text]. Keep each note under 60 words.`;
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    const data=await res.json();
+    const text=data.content?.[0]?.text||'Unable to generate notes.';
+    const lines=text.split('\n').filter(l=>l.trim());
+    document.getElementById('ai-content').innerHTML=lines.map(l=>{
+      const match=l.match(/^([A-Z\-&\.]+):\s*(.*)/);
+      if(match)return`<div class="ai-note"><div class="ai-stock">${match[1]}</div><div>${match[2]}</div></div>`;
+      return`<div style="color:var(--mu);font-size:11px;margin-bottom:4px">${l}</div>`;
+    }).join('');
+  }catch(e){
+    document.getElementById('ai-content').innerHTML=`<div style="color:var(--rd);font-size:11px">API error. In production, add your Anthropic API key. Error: ${e.message}</div>
+    <div style="color:var(--mu);font-size:10px;margin-top:8px">Demo note: HDFCBANK — India's leading private bank with best-in-class asset quality and NIMs. Consistent dividend payer with ROE >16%. Key risk: deposit growth pressure in rising rate environment. Outlook: Buy on dips below ₹1,650.</div>`;
+  }
+}
+
+// ─── Tab navigation ────────────────────────────────────────────────────────
+function showTab(id,el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');
+  ['screener','portfolio','watchlist','alerts'].forEach(v=>{
+    const el=document.getElementById('view-'+v);
+    if(el)el.style.display=v===id?'block':'none';
+    if(v==='screener'&&id==='screener'){document.getElementById('view-screener').style.display='flex';}
+  });
+  document.getElementById('abar').style.display=id==='screener'?'flex':'none';
+  if(id==='portfolio')renderPortfolio();
+  if(id==='watchlist')renderWatchlist();
+  if(id==='alerts')renderAlerts();
+}
+
+// ─── Column toggle ─────────────────────────────────────────────────────────
+const extraCols=[8,9,10,15,16]; // PB, EV, ROE, Promoter, FII cols by index
+let colsHidden=false;
+function toggleCol(){
+  colsHidden=!colsHidden;
+  document.querySelectorAll('#tbl th, #tbl td').forEach((el,i)=>{});
+  // toggle advanced cols
+  const tbl=document.getElementById('tbl');
+  const cells=tbl.querySelectorAll('tr');
+  cells.forEach(row=>{
+    const tds=[...row.children];
+    [9,10,15,16].forEach(ci=>{if(tds[ci])tds[ci].style.display=colsHidden?'none':'';});
+  });
+}
+
+// ─── Reset ─────────────────────────────────────────────────────────────────
 function rst(){
   ac='all';document.querySelectorAll('.cb').forEach(b=>b.classList.remove('on'));
   document.querySelector('[data-c="all"]').classList.add('on');
   ['fs','fg2','fe'].forEach(id=>document.getElementById(id).value='all');
   document.getElementById('q').value='';
   document.getElementById('dyn').value=0;document.getElementById('dyx').value=15;
-  document.getElementById('pen').value=0;document.getElementById('pex').value=100;
+  document.getElementById('pen').value=0;document.getElementById('pex').value=150;
+  document.getElementById('pbn').value=0;document.getElementById('pbx').value=30;
+  document.getElementById('evn').value=0;document.getElementById('evx').value=60;
+  document.getElementById('roe').value=0;document.getElementById('roce').value=0;
+  document.getElementById('phn').value=0;document.getElementById('phx').value=100;
+  document.getElementById('fiin').value=0;document.getElementById('fiix').value=80;
   document.getElementById('pwn').value=-80;document.getElementById('pwx').value=200;
   document.getElementById('prn').value=0;document.getElementById('prx').value=50000;
-  document.getElementById('dem').value=5;document.getElementById('del').textContent='≤5';
+  document.getElementById('dem').value=5;document.getElementById('betam').value=3;
+  document.getElementById('del').textContent='≤5';document.getElementById('betal').textContent='≤3';
+  document.getElementById('roel').textContent='0%';document.getElementById('rocel').textContent='0%';
   sr();fil=[...STOCKS];sc='mc';sd=-1;cp=1;sar();
 }
+
+// ─── Clock & market ────────────────────────────────────────────────────────
 function uc(){document.getElementById('ck').textContent='IST '+new Date().toLocaleTimeString('en-IN',{timeZone:'Asia/Kolkata',hour12:false})+'  ·  NSE/BSE';}
-rst();setInterval(uc,1000);uc();
+function initMkt(){
+  const n=R(23400,24200,0),s=R(77200,79400,0);
+  document.getElementById('nifty-badge').textContent=`NIFTY ${n.toLocaleString('en-IN')} ${Math.random()>.5?'▲':'▼'}`;
+  document.getElementById('sensex-badge').textContent=`SENSEX ${s.toLocaleString('en-IN')} ${Math.random()>.5?'▲':'▼'}`;
+  document.getElementById('vix-badge').textContent=`VIX ${R(12,18,1)}`;
+}
+
+rst();
+setInterval(uc,1000);uc();
+initMkt();
 </script>
 </body>
 </html>
